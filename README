@@ -29,6 +29,24 @@ is readable as plaintext, so just try jumping in. Adding references
 between documents, glossary items, and code examples requires learning
 a bit more about Sphinx.
 
+The root directory contains only the build files and the source/
+directory, which contains all the documentation files. Once you run
+Sphinx, it will also contain the build/ directory, which contains all
+the generated files. Within the source/ directory, the contents should
+be self-explanatory. At a high level, we currently provide a user
+guide and a developer guide, as described earlier.
+
+How do I build the documentation?
+---------------------------------
+The Makefile and make.bat in the root directory handle this for
+you. Make sure you have Sphinx installed. Then run
+
+  make html
+
+to generate the html version. All generated documentation will be
+placed in the directory build/.  The argument 'html' can be
+substituted with other generators, e.g., dirhtml, latex, or htmlhelp.
+
 Where can I find out more?
 --------------------------
 The most up to date information about the Sirikata project is at
