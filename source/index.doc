@@ -5,38 +5,70 @@
 Welcome
 =======
 
+
 What is Sirikata?
 -----------------
 
-Sirikata is an BSD licensed open source platform for games and virtual
-worlds. We aim to provide a set of libraries and protocols which can
-be used to deploy a virtual world, as well as fully featured sample
-implementations of services for hosting and deploying these worlds.
+.. sidebar:: A Sirikata Application
 
-Sirikata is not an application but a platform on which shared,
-networked, 3D applications can be built.  Examples include multiplayer
-online games, interactive meeting spaces, and social virtual worlds.
-Sirikata recognizes that large parts of these systems are identical --
-objects join a shared space, discover other objects, communicate with
-each other, have behavior defined by small scripts, and so on -- and
-attempts to provide scalable, flexible, and extensible implementations
-of these services.  Application developers can build on Sirikata's
-infrastructure, taking advantage of a much lower barrier to entry and
-proven scalability.
+   .. image:: images/kataspace_screenshot.*
+      :width: 100%
 
-Target Audience
----------------
+   KataSpace is an example application built with Sirikata. Users
+   join the world as an avatar and can chat with each other.
 
-This manual is targeted at *users* of Sirikata.  Note that this
-means users of the platform, not users of applications built on
-Sirikata.  So in this case, user means an application developer.
-Because Sirikata has many standard components with reasonable
-defaults, ideally applications can be developed mainly in scripting
-languages.  However, this manual is geared towards users who need to
-also extend Sirikata, adding functionality which is not already
-available from the existing plugins.
+Sirikata is a BSD-licensed platform for virtual world
+applications. Virtual worlds are shared, online, 3D, interactive
+spaces. They have a lot of applications -- from games and
+entertainment, to education, to social applications.
+Sirikata makes creating virtual worlds easy.
 
-Getting Started
----------------
 
-For now, visit the :doc:`contents`.
+How do I use Sirikata?
+----------------------
+
+Sirikata provides all the tools for creating a virtual world, but it
+isn't a single world that you can log into. Instead, you use Sirikata
+to create your own world or an *application* in a Sirikata-based
+world.
+
+There are two types of users of Sirikata:
+
+Application Developers
+  A user that participates in a Sirikata-based world created by a
+  world developer and adds content to it, for instance adding objects,
+  their associated appearance, and adding behavior to them to bring
+  the world to life.
+
+World Developers
+  A user that takes components of Sirikata, configures them, and ties
+  them together to create their own, unique world.
+
+While application developers might be end-users, generally this guide
+is not for end-users.  The world developer is responsible for
+providing documentation for them since Sirikata is highly customizable
+-- clients for different worlds may look different, respond
+differently to interaction, and permit different actions in the world.
+
+Both types of users should start out by understanding the
+:doc:`architecture`: you need to understand the components of the
+system at a high level and how they work together to create the world
+before you can understand how to setup a world or build within a
+world.
+
+Application developers should proceed to the :doc:`appguide/index`. World
+developers should then read about the :doc:`ecosystem` to understand
+their options when constructing a world and then proceed to the
+:doc:`worldguide/index`.
+
+For a complete list of available documentation, see the
+:doc:`contents`. Or :ref:`search` for a particular topic.
+
+
+How do I help develop the Sirikata platform?
+--------------------------------------------
+
+Found a bug and want to try fixing it? Need functionality that isn't
+built into Sirikata? If you want to dig into the Sirikata platform
+code (rather than building on it), check out the
+:doc:`platformguide/index`.
