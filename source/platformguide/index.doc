@@ -4,3 +4,10 @@
 
 Platform Developers Guide
 =========================
+
+
+
+.. toctree::
+   :hidden:
+
+   architecture
