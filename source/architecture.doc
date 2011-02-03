@@ -20,20 +20,22 @@ interact with each component.
 At the highest level, Sirikata is composed of three parts: the space,
 the object hosts, and the content distribution network:
 
-Object Host
-  Simulates object behavior in the world by running scripts. User clients
-  are object hosts that also know how to run a display.
+.. glossary::
 
-Space
-  A collection of one or more servers that simulate the
-  world. Mediates interaction between objects, such as physics and
-  communication.
+   Object Host
+     Simulates object behavior in the world by running scripts. User
+     clients are object hosts that also know how to run a display.
 
-Content Distribution Network
-  Stores semi-permanent to permanent data and delivers it to the other
-  components. For instance, meshes that are used to display objects
-  are stored on a CDN and client object hosts can download them to
-  view the world.
+   Space
+     A collection of one or more servers that simulate the
+     world. Mediates interaction between objects, such as physics and
+     communication.
+
+   Content Distribution Network
+     Stores semi-permanent to permanent data and delivers it to the
+     other components. For instance, meshes that are used to display
+     objects are stored on a CDN and client object hosts can download
+     them to view the world.
 
 .. sidebar:: Example Deployments
 

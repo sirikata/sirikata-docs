@@ -34,15 +34,17 @@ world.
 
 There are two types of users of Sirikata:
 
-Application Developers
-  A user that participates in a Sirikata-based world created by a
-  world developer and adds content to it, for instance adding objects,
-  their associated appearance, and adding behavior to them to bring
-  the world to life.
+.. glossary::
 
-World Developers
-  A user that takes components of Sirikata, configures them, and ties
-  them together to create their own, unique world.
+   Application Developers
+     A user that participates in a Sirikata-based world created by a
+     world developer and adds content to it, for instance adding
+     objects, their associated appearance, and adding behavior to them
+     to bring the world to life.
+
+   World Developers
+     A user that takes components of Sirikata, configures them, and
+     ties them together to create their own, unique world.
 
 While application developers might be end-users, generally this guide
 is not for end-users.  The world developer is responsible for
