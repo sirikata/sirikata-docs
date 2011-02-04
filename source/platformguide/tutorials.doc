@@ -18,5 +18,6 @@ architecture of the entire system.
 
 .. toctree::
 
+   tutorials/appstructure
    tutorials/plugin
    tutorials/options
