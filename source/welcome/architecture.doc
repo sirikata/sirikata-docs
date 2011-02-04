@@ -68,10 +68,10 @@ components, but tries to remain non-technical. The description here
 should be sufficient for application developers. World developers may
 need to understand the components in more detail to customize their
 world. Greater detail can be found in the
-:doc:`worldguide/architecture` of the
-:doc:`worldguide/index`. Finally, if you're looking to extend the
-Sirikata platform, check the :doc:`platformguide/architecture` in the
-:doc:`platformguide/index`.
+:ref:`world-architecture` of the
+:ref:`world-guide`. Finally, if you're looking to extend the
+Sirikata platform, check the :ref:`platform-architecture` in the
+:ref:`platform-guide`.
 
 Space
 -----

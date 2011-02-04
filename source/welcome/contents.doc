@@ -2,7 +2,11 @@
    Copyright 2011, Ewen Cheslack-Postava.
    CC-BY, see LICENSE file for details.
 
-.. _world-guide:
+###################
+Welcome to Sirikata
+###################
 
-Introduction for World Developers
-=================================
+.. toctree::
+
+   architecture
+   ecosystem

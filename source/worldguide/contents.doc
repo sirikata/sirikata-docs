@@ -2,7 +2,10 @@
    Copyright 2011, Ewen Cheslack-Postava.
    CC-BY, see LICENSE file for details.
 
-.. _world-guide:
+#######################
+World Developer's Guide
+#######################
 
-Introduction for World Developers
-=================================
+.. toctree::
+
+   index

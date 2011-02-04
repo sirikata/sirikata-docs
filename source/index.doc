@@ -53,15 +53,15 @@ providing documentation for them since Sirikata is highly customizable
 differently to interaction, and permit different actions in the world.
 
 Both types of users should start out by understanding the
-:doc:`architecture`: you need to understand the components of the
+:ref:`general-architecture`: you need to understand the components of the
 system at a high level and how they work together to create the world
 before you can understand how to setup a world or build within a
 world.
 
-Application developers should proceed to the :doc:`appguide/index`. World
-developers should then read about the :doc:`ecosystem` to understand
+Application developers should proceed to the :ref:`app-guide`. World
+developers should then read about the :ref:`ecosystem` to understand
 their options when constructing a world and then proceed to the
-:doc:`worldguide/index`.
+:ref:`world-guide`.
 
 For a complete list of available documentation, see the
 :doc:`contents`. Or :ref:`search` for a particular topic.
@@ -73,4 +73,4 @@ How do I help develop the Sirikata platform?
 Found a bug and want to try fixing it? Need functionality that isn't
 built into Sirikata? If you want to dig into the Sirikata platform
 code (rather than building on it), check out the
-:doc:`platformguide/index`.
+:ref:`platform-guide`.

@@ -2,11 +2,10 @@
    Copyright 2011, Ewen Cheslack-Postava.
    CC-BY, see LICENSE file for details.
 
-Platform Developer's Guide
-==========================
+.. _platform-guide:
 
-Introduction
-------------
+Introduction for Platform Developers
+====================================
 
 Sirikata is a large system composed of a large number of independent
 services and components. Adding a new feature or fixing a bug can be a
@@ -58,9 +57,3 @@ main sections:
 * :doc:`tutorials` - A series of tutorials describing certain aspects
   of the system which aren't specific to any component but which any
   developer will encounter when working with the system.
-
-.. toctree::
-   :hidden:
-
-   architecture
-   tour

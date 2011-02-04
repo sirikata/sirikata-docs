@@ -2,6 +2,8 @@
    Copyright 2011, Ewen Cheslack-Postava.
    CC-BY, see LICENSE file for details.
 
+.. _ecosystem:
+
 The Sirikata Ecosystem
 ======================
 
@@ -11,7 +13,7 @@ components of that architecture to interact. Implementations of these
 components allow a world developer to collect and tie together all the
 pieces necessary to run a world.
 
-The :doc:`architecture` describes the high level components required
+The :ref:`general-architecture` describes the high level components required
 in a Sirikata virtual world and their basic functions. This document
 lists the known implementations of the different Sirikata
 components. This is a good reference for world developers: they will
@@ -22,7 +24,7 @@ This is just a high level breakdown. For instance, the C++
 implementation is plugin based and you can choose to turn features on
 or off, change which implementation you use, and interact with
 different external services. These options are described in more
-detail in the :doc:`worldguide/index` and in each implementation's
+detail in the :ref:`world-guide` and in each implementation's
 documentation.
 
 Protocol

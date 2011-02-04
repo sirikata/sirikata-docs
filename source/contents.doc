@@ -9,11 +9,11 @@ Table of Contents
    :maxdepth: 2
 
    index
-   architecture
-   ecosystem
 
-   appguide/index
+   welcome/contents
 
-   worldguide/index
+   appguide/contents
 
-   platformguide/index
+   worldguide/contents
+
+   platformguide/contents
