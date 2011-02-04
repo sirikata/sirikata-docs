@@ -1,0 +1,77 @@
+.. Sirikata Documentation
+   Copyright 2011, Ewen Cheslack-Postava.
+   CC-BY, see LICENSE file for details.
+
+.. _platform-components-space:
+
+Space
+-----
+
+In some sense, the space is the actual world: it enables all
+interaction between objects, it is the medium by which objects learn
+about each other and communicate. From the perspective of objects
+connected to the space, it provides three services: presence (also
+known as space membership, session management, authentication),
+physical simulation, and interobject communication.
+
+Authentication and Presence
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Spaces enable objects to communicate and enforce the constraints of
+the virtual world. First, when an object wants to enter the world, the
+space acts as the guardian, deciding whether or not an object should
+be able to enter.  The policy for allowing entrance is left up to the
+application developer.  In existing systems this step usually only
+applies to clients connecting to the world -- most systems conflate
+the simulation of individual objects with the simulation of the world,
+and lack flexible policies on object admission, aside from user
+accounts.  One common example of this step in traditional systems is
+admission control for load balancing purposes -- a world may only
+allow a few hundred players to connect to a given space or region of
+the world at a time to control load.
+
+Once an object has been granted access to the world, it must provide
+the space with all the necessary information for the world to simulate
+it (note that this might actually occur as part of the admission
+process to enable full consistency and representation as soon as
+admission is granted). Certain properties of the object are actually
+controlled or owned by the space itself -- for instance the object's
+position, orientation, and mesh -- so that the space can make sure the
+world is simulated consistently.  We defer further discussion of this
+issue to authoritative_state.  However, application level state
+is maintained in the object itself, so the space maintains (and needs
+to know about) relatively little state for each connected object.
+
+Discovery
+^^^^^^^^^
+
+Once all the necessary proprties of an object are available to the
+space, the only barrier to objects communicating with each other is
+discovery: the space provides a query mechanism which allows objects
+to discover other relevant objects in the space. Objects register a
+query (its not necessary to understand the form, a common example from
+existing systems would be "objects within 100m"), and the space
+provides continuous updates, providing each object with a list of
+other objects that are currently relevant to it.
+
+Communication & Messaging
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Finally, with references to these other objects in hand, a connected
+object may communicate with them via messages.  The lowest level
+communication between objects is unreliable unordered messages, but
+Sirikata also provides higher level transport abstractions to make
+writing object scripts simpler.
+
+Extensions
+^^^^^^^^^^
+
+The above services are the minimum shared services required to run a
+virtual world. Note the lack of any discussion of physics simulation,
+inventory services, VOIP, or any other complicated services commonly
+available in today's virtual worlds. These are higher level services
+which are not common to all applications and sometimes do not make
+sense in some applications.
+
+For more internal details of the space and how to extend it, see the
+space_architecture.

@@ -34,11 +34,11 @@ Sirikata code, rather than just using it's components to deploy a
 world.  If you need to fix a bug in the system or want to add a new
 plugin (e.g. a new scripting language), then you should be reading
 this guide. If you want to deploy your own world or learn about
-scripting objects, you should start back at the :doc:`../index`
+scripting objects, you should start back at the :ref:`welcome`
 document.
 
 The guide is oriented towards the primary C++ code base. While some of
-the content (for instance, the :doc:`architecture`) will be helpful
+the content (for instance, the :ref:`platform-components`) will be helpful
 regardless of the code base you are working on, specifics about
 developing for other implementations should be found in their
 respective guides.
@@ -50,10 +50,10 @@ Getting Started
 As mentioned above, you probably want to start with one of the three
 main sections:
 
-* :doc:`tour` - A technical tour of the system and the code
+* :ref:`platform-tour` - A technical tour of the system and the code
   repositories.
-* :doc:`components` - A breakdown of the services and components of
+* :ref:`platform-components` - A breakdown of the services and components of
   the system, with details of their operation.
-* :doc:`tutorials` - A series of tutorials describing certain aspects
+* :ref:`platform-tutorials` - A series of tutorials describing certain aspects
   of the system which aren't specific to any component but which any
   developer will encounter when working with the system.

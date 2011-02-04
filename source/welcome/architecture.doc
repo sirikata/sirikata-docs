@@ -70,7 +70,7 @@ need to understand the components in more detail to customize their
 world. Greater detail can be found in the
 :ref:`world-architecture` of the
 :ref:`world-guide`. Finally, if you're looking to extend the
-Sirikata platform, check the :ref:`platform-architecture` in the
+Sirikata platform, check the :ref:`platform-components` in the
 :ref:`platform-guide`.
 
 Space
