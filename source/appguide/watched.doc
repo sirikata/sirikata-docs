@@ -1,0 +1,24 @@
+.. Sirikata Documentation
+   Copyright 2011, Ewen Cheslack-Postava.
+   CC-BY, see LICENSE file for details.
+
+.. _watched:
+
+Watched
+=======================================
+
+High level description
+--------
+Watched objects are created through a call to the :ref:`util` util
+object.  They can be passed to :ref:`when` whens to create scripter-defined
+events.  When any field in a watched object is set, the entire object
+is flagged as dirty.  Scripts in Emerson are event-driven.  When a
+callback associated with an event is finished running, the system runs
+through the when predicates of all watched objects that were flagged.
+If the predicate previously evaluated to false, but switches to true,
+the callback of the when is executed.  
+
+
+Notes:
+--------
+

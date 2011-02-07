@@ -6,3 +6,12 @@
 
 Introduction for Application Developers
 =======================================
+Descriptions for some of the basic objects provided by Emerson.
+
+  * :ref:`contexts`
+  * :ref:`presence`
+  * :ref:`system`
+  * :ref:`util`
+  * :ref:`visibleObj`
+  * :ref:`watched`
+  * :ref:`when`

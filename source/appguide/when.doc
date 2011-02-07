@@ -1,0 +1,47 @@
+.. Sirikata Documentation
+   Copyright 2011, Ewen Cheslack-Postava.
+   CC-BY, see LICENSE file for details.
+
+.. _when:
+
+When
+=======================================
+
+High level description
+--------
+When expressions allow scripters to specify their own events and the
+callbacks to respond to them.
+
+Programmers create a when expression through the :ref:`util` util object,
+passing a predicate, a callback, a polling period (in seconds, or null
+if a scripter does not want the when expression to poll), and an array of
+watchable objects into the constructor.  (Either visible objects or objects
+specifically created as watchable objects.)  A scripter can pass
+null into the polling period instead of a number.
+
+Whenever any of the watchable objects' attributes change or the
+polling period expires, predicate to a when expression is
+re-evaluated.  If the predicate had previously evaluated to false, but
+now evaluates to true, the callback function is executed.
+
+Like contexts, whens can be suspended and resumed either directly by
+the programmer or as a result of the :ref:`context` context the when expression
+is created in being suspended.
+
+
+
+Notes:
+--------
+ * The syntax for when is pretty ugly right now.  Will move a proper when
+   into the grammar.
+
+ * The polling period seems particularly ugly.  Optimally, whens would be
+   purely event driven, and would not poll the values of their associated
+   watchable variables.  The issue with this approach is that visible
+   objects change very frequently.  We could re-run the predicate each
+   time a visible object moves even a milimeter.  Or we could specify a
+   minimum to poll visible objects.  We may restrict the predicate
+   function of whens to get around this problem as well.
+
+
+

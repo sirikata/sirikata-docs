@@ -1,0 +1,61 @@
+.. Sirikata Documentation
+   Copyright 2011, Ewen Cheslack-Postava.
+   CC-BY, see LICENSE file for details.
+
+.. _visibleObj:
+
+Visible Objects
+=======================================
+
+High level description
+--------
+A visible object represents the proxy for your or another entity's presence.  They cannot be directly declared in Emerson, but arise from:
+  * Creation by the system through the :ref:`presence` onProxAdded and onProxRemoved callbacks
+associated with your individual presence,
+  * The self object (also automatically created by the system), representing your most recently associated presence's visible object, and
+  * Serialized messages received from alternate entities.
+    
+
+    Visible objects are watchable, meaning they can be passed into
+    :ref:`when` when expressions that specifically track them.
+At a high level, visible objects support several simple methods: sending a message to the presence represented by the visible object, finding the position of the presence associated with the visible object, etc.
+
+
+
+Visible object methods
+--------
+The full api for Emerson can be found here(not functional yet).  A subset of methods for
+visible objects are discussed below:
+
+  * sendMessage: takes in an object which gets sent unreliably to the
+    presence associated with the visible object.
+  * checkEqual: takes a single argument (another visible object).
+    Returns true if the objects' being compared are associated with
+    the same virtual world presences.  
+  * getPosition returns the last known position (as a vector) of the
+    presence associated with this visible object.  Calling getPosition
+    flags the visible object, forcing re-evaluation of any when
+    predicates:ref:`when` the visible object is associated with.  
+  * getStillVisible returns a boolean corresponding to whether the
+    presence associated with the visible object still satisfies the
+    proximity query that generated it (ie, the visual object's
+    position is still being maintained by loc).  A value of false
+    indicates that loc is no longer updating the object's position,
+    while a value of true indicates that loc is.  Like getPosition,
+    getStillVisible flags the visible object, forcing predicates of
+    associated when statements to be re-evaluated.
+
+    
+    
+Visible object quirks
+--------
+Serialization.
+VisibleToWhom.
+
+Visible object notes
+--------
+  * Visible objects may be re-named.
+  * It is unclear whether self should be a visible object or a presence
+    object.
+  * Further, there is a chance that presence objects may inherit from
+    visible objects in the future.

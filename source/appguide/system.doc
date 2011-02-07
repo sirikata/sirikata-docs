@@ -1,0 +1,51 @@
+.. Sirikata Documentation
+   Copyright 2011, Ewen Cheslack-Postava.
+   CC-BY, see LICENSE file for details.
+
+.. _system:
+
+System Object
+=======================================
+
+High level description
+--------
+
+The system object provides an interface to functionality that should
+not necessarily be accessible by third-party code executed in
+contexts.  Below is a list of some of methods available through the
+system object:
+
+  * import: Takes in a string pointing with the filename of Emerson
+    code to be executed by the Emerson instance.  (Filename is
+    relative to the /build/cmake directory of Emerson.)
+  * reboot: Destroy all handlers, whens, timeouts, etc. associated
+    with the entity.  (Note: whens may not be being correctly
+    destroyed by a reboot command now.)
+  * create_entity: Create another entity on the same object host as
+    the object host that the current entity is executing on.
+  * create_presence: Create another presence to be associated with
+    this entity.
+  * create_context: Create a new context object.  Constructor takes 5
+    arguments: a presence, a visible object, 3 bools.  The presence is
+    the presence that the context is associated with.  All messages
+    sent from code within the context will be "from" this presence.
+    If code within the context is permitted to set proximity queries
+    (as specified by the 3rd bool), they will be proximity queries
+    from this presence as well, etc.  The visible object can always be
+    messaged from within the context.  The first bool specifies
+    whether code within the context can send messages to any object in
+    the world (not just the visible object associated with it).  The
+    third bool represents whether the context can receive messages
+    from any object in the world.  The third boolean represents
+    whether code from within the context can set proximity queries.
+  * onPresenceConnected: Takes in a function that specifies what to do
+    when a presence connects to a space.
+  * onPresenceDisconnected: Takes in a function that specifies what to
+    do when a presence disconnects from a space.
+  * presences array contains an array of all connected presences that
+    an entity posseses.
+
+
+Notes:
+--------
+Serialization

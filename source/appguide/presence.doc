@@ -1,0 +1,50 @@
+.. Sirikata Documentation
+   Copyright 2011, Ewen Cheslack-Postava.
+   CC-BY, see LICENSE file for details.
+
+.. _presence:
+
+Presence object
+=======================================
+
+High level description
+--------
+
+A presence object encapsulates the physical and logical representation
+of an entity.  (An entity however may have more than one presence.)
+
+Through a presence object, an entity interacts directly with the space
+interacting with the space.  These interactions include, requesting
+the space to move the presence's representation, change the mesh
+associated with the presence's representation, receive callbacks from
+system events (eg when new exterior presences satisfy a presence's
+proximity queries), send messages, etc.
+
+
+Presence object methods
+--------
+An incomplete overview of functionality provided through presence objects:
+
+
+
+  * getMesh and setMesh: get the uri or set the uri associated with
+    the representation of the presence in the virtual world.
+  * setQueryAngle: Takes a single numeric argument.  Any presence that
+    would take up a larger solid angle than this argument will be
+    returned to your presence from PINTO.  (See associated onProxAdded
+    and onProxRemoved function below.)
+  * onProxAdded and onProxRemoved: Each take a single function
+    argument.  This function is called when a presence in the virtual
+    world satisfies or no longer satisfies the query angle a scripter
+    has specified, respectively.
+  * getVelocity and setVelocity: set the velocity associated with this
+    presence.  getVelocity returns a vec3 and setVelocity takes a vec3 arg.
+  * getPosition, setPosition, getOrientation, setOrientation,
+    getOrientationVel, setOrientationVel are also provided
+    
+
+
+Notes:
+--------
+Serialization.
+The syntax of each of the above functions will likely change.
