@@ -9,6 +9,8 @@ Application Developer's Guide
 .. toctree::
 
    index
+   helloworld
+   movepresence
    context
    presence
    system

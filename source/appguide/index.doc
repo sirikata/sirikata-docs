@@ -6,8 +6,49 @@
 
 Introduction for Application Developers
 =======================================
-Descriptions for some of the basic objects provided by Emerson.
+A couple of basic tutorials to
 
+Before you begin
+--------
+It may be useful to know a couple of things:
+  
+  * Emerson is based on ECMAScript (of which JavaScript is a dialect).
+    Much of its syntax and semantics are very similar to
+    ECMAScript/JavaScript.  It may be useful to read a little about
+    ECMAScript http://en.wikipedia.org/wiki/ECMAScript and JavaScript
+    (minus the web-related stuff:
+    http://www.cs.brown.edu/courses/bridge/1998/res/javascript/javascript-tutorial.html
+    and http://www.crockford.com/javascript/inheritance.html ) before
+    beginning.
+    
+    
+  * We have an Emerson user group on Google Groups.  You can peruse
+    previous questions or ask new questions here: http://groups.google.com/group/emerson-users
+    
+  * Here is Emerson's API<lkjs>.  If something appears
+    to be missing, that may be because it was inadvertently
+    un-included.  Tell us what it is, and we'll try to add it.
+
+  * Here are a few example scripts<lkjs> to get you started.
+
+  * Here is a link explaining some basic Emerson terminology<lkjs>.
+    You may want to consult it throughout this document.
+    For now, all you need to know is that when an entity<lkjs> 
+    connects to a world, it is assigned a <lkjs>presence.  This
+    presence has geometric properties, such as a position, velocity,
+    mesh, etc.  The presence can also send and receive messages.
+
+    
+Tutorials
+--------
+We created a few basic tutorials to get you going with Emerson:
+  * :ref:`helloworld` -- Explains how to print a simple "Hello, World!" message.
+  * :ref:`movepresence` -- Explains how to move a presence in a virtual world.
+  
+
+  
+Some relevant Emerson objects
+--------
   * :ref:`contexts`
   * :ref:`presence`
   * :ref:`system`
