@@ -70,7 +70,6 @@ The above is explained more methodically below.
 To get a 3-dimensional vector representing the current position of a
 presence in space, simply use the ``getPosition()`` function.  As an
 example, open a scripting window and enter:
-
 ::
         var pos = system.presences[0].getPosition();
         system.print(pos);
@@ -80,7 +79,6 @@ form: <x,y,z>.  You can access the individual x, y, and z fields of
 this position with the accessors `.x`, `.y`, and `.z`, respectively.
 That is, if you wanted to just print the x position of a presence, you
 would replace the second line of the above function as shown below:
-
 ::
         var pos = system.presences[0].getPosition();
         system.print(pos.x);
