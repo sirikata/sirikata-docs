@@ -92,7 +92,6 @@ scripting, and therefore uses the second strategy.
 
 Consider the simple following script:
 ::
-
         function printHelloWorld(newPres)
         {
             system.print("\n\nHello, World!\n\n");

@@ -6,7 +6,7 @@
 
 Introduction for Application Developers
 =======================================
-A couple of basic tutorials to
+
 
 Before you begin
 --------
@@ -31,10 +31,10 @@ It may be useful to know a couple of things:
 
   * Here are a few example scripts<lkjs> to get you started.
 
-  * Here is a link explaining some basic Emerson terminology<lkjs>.
+  * Here is a link explaining some basic Emerson terminology :ref:`terminology`.
     You may want to consult it throughout this document.
-    For now, all you need to know is that when an entity<lkjs> 
-    connects to a world, it is assigned a <lkjs>presence.  This
+    For now, all you need to know is that when an entity
+    connects to a world, it is assigned a presence.  This
     presence has geometric properties, such as a position, velocity,
     mesh, etc.  The presence can also send and receive messages.
 
@@ -44,7 +44,7 @@ Tutorials
 We created a few basic tutorials to get you going with Emerson:
   * :ref:`helloworld` -- Explains how to print a simple "Hello, World!" message.
   * :ref:`movepresence` -- Explains how to move a presence in a virtual world.
-  
+  * :ref:`sendMessage`  -- Explains how to send and receive messages between presences in the virtual world.  
 
   
 Some relevant Emerson objects

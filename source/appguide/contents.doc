@@ -11,6 +11,8 @@ Application Developer's Guide
    index
    helloworld
    movepresence
+   sendmessage
+   terminology
    context
    presence
    system
@@ -18,5 +20,6 @@ Application Developer's Guide
    visibleObj
    when
 
+   
 
 

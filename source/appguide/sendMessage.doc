@@ -1,0 +1,184 @@
+.. Sirikata Documentation
+   Copyright 2011, Ewen Cheslack-Postava.
+   CC-BY, see LICENSE file for details.
+
+.. _sendMessage:
+
+Sending and receiving messages
+=======================================
+
+The primary way that a presence associated with one entity interacts
+with a presence associated with another entity is for the presences to
+send messages between each other.  This tutorial will show you how to
+send and receive messages between presences.
+
+In the real world, if you were going to email your friend, you would
+first need your friend's email address.  Similarly, before Presence A
+can send a message to Presence B in the virtual world, Presence A must
+be have Presence A's "address".  This tutorial will first describe how
+to get a presence's address, then it will explain how to send
+messages, and, finally, it will describe how to receive messages.  It
+will use the example of one presence's sending another presence a
+request to move, and the other presence's responding to that message
+by moving.
+
+
+Register proximity queries/discover presences
+--------
+
+Theory
++++++++++++++++++++
+By default an entity only knows about its own presences.  For an
+entity to discover other presences in the virtual world, it registers
+a query through one of its presences with the Meru system.  Here's an
+example of such a query:
+::
+        system.presences[0].setOnProxAdded( userAddedCallback );
+        system.presences[0].setQueryAngle(.4);
+
+These queries take a little thinking about.  Roughly translated, the
+first line of the above code reads: "When a presence gets near to be
+important to me, execute the function ``userAddedCallback``, which the
+scripter has defined somewhere earlier in the program."  (We will
+show an example of ``userAddedCallback`` that sends messages in the
+next section.)
+
+The second line of the above code actually defines what it means to be
+"important".  Meru uses the amount of Presence A's field of view taken
+up by Presence B as a measure of B's importance to A.  Maybe a more
+concrete way to think about the above is through pixels.  If Presence
+B takes a large number of pixels on a computer monitor showing
+Presence A's view of the world, it is more important than if it takes
+only a small number of pixels to render B.  In this way, presences
+that are nearer to A or larger are more important to A than those that
+are more distant and smaller.  The below figures highlight relative
+importance.  The lower figures are more "important" than the upper figures.
+
+   .. image:: images/relativeImportanceFigures/leastImportant.png
+      :width: 50%
+The bug in the above picture is less "important" than the bug in the
+picture below.
+      
+   .. image:: images/relativeImportanceFigures/neutral.png
+      :width: 50%
+The bug in the above picture is less "important" than the bug in the
+picture below.
+
+   .. image:: images/relativeImportanceFigures/mostImportant.png
+      :width: 50%
+The bug in the above figure would be more "important" than the bugs in
+either of the previous two figures.
+
+However, because of discretization and other errors caused by pixels,
+we don't use pixels directly.  Instead we use steradians.  The second
+line of the above code therefore reads, "A presence is important to me
+if it takes up at least .4 steradians of my field of view".
+(steradians are a measure of solid angle.  You can read more about
+them here http://en.wikipedia.org/wiki/Steradian.
+All we really want you to know is that a large steradian
+means that a presence would take up many pixels on your monitor; a
+small steradian would take up very few pixels on your monitor.)
+
+Before moving on to the next section, it should be noted that in
+addition to the ``onProxAdded`` function shown above, Emerson has a
+complementary ``onProxRemoved`` function for presences.  It looks
+something like this in practice:
+::
+        system.presences[0].onProxRemoved(userRemovedCallback);
+
+Essentially, when an external presence no longer satisfies a solid
+angle query, the system notifies you that that presence has left the
+result set by calling userRemoveCallback. 
+
+Try it yourself
++++++++++++++++++++
+Enter the virtual world as an avatar.  You should have just one
+presence associated that is connected to the space.  From here, script
+yourself.  Enter the following code into your own scripting terminal
+(hit ``ctrl`` + ``s`` to bring up a scripting window for yourself):
+::
+        function userAddedCallback(nowImportantPresence)
+        {
+            system.print("\n\nPresence with address " + nowImportantPresence.toString() + " is now important!\n\n");
+        }
+
+        function userRemovedCallback(nowUnimporantPresence)
+        {
+            system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n"); 
+        }
+        
+        system.presences[0].setOnProxAdded( userAddedCallback );
+        system.presences[0].setQueryAngle(.4);
+
+Now, move closer and farther from other presences in the virtual
+world.  You should see the print message associated with
+``userAddedCallback`` when you get very close to an presence, and you
+should see ``userRemovedCallback`` when you move away from that
+presence after being more distant.
+
+You can monkey around by changing ``userAddedCallback`` and
+``userRemovedCallback`` to do more elaborate things, for instance,
+rotating your avatar in a circle on each message.  
+
+
+
+Send message
+--------
+The previous section should have explained to you how to discover
+presences in the virtual world.  However, even if you know the
+address and existence of a presence how can you interact with it?
+
+The way that presences on distinct entities interact in Emerson is
+through *messages*.  This section explains how a scripter would
+create and send a message to another presence.  To do so, let's start
+by re-using a little code from the previous section:
+::
+        function userAddedCallback(nowImportantPresence)
+        {
+           system.print("\n\nPresence with address " + nowImportantPresence.toString() + " is now important!\n\n");
+           ...
+           We will be changing the contents of this function.
+           ...
+        }
+
+        function userRemovedCallback(nowUnimporantPresence)
+        {
+            system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n"); 
+        }
+        
+        system.presences[0].setOnProxAdded( userAddedCallback );
+        system.presences[0].setQueryAngle(.4);
+
+
+As mentioned in the previous section, the Emerson runtime system will
+automatically execute ``userAddedCallback`` when a new presence
+consumes more than .4 steradians of ``presence[0]``'s field of view.
+What we didn't mention before was what the runtime binds to ``nowImportantPresence`` (the
+argument of ``userAddedCallback``) how it can be used.
+``nowImportantPresence`` corresponds to an Emerson *visible* object.
+(For more on visible objects, see here :ref:`visibleObj`.)  Visible
+objects have a ``sendMessage`` method.  This method takes a single
+argument: the message to be sent. 
+
+Messages themselves are simply Emerson objects.  For instance, one
+could change the userAddedCallback function to do the following:
+::
+        function userAddedCallback(nowImportantPresence)
+        {
+           system.print("\n\nPresence with address " + nowImportantPresence.toString() + " is now important!\n\n");
+
+           //create a new message
+           var moveMsg = new Object();
+           moveMsg.action = "forward";
+           
+           nowImportantPresence.sendMessage(moveMsg);
+        }
+
+
+That's all there is to it!  You can now send messages.  The next
+section will describe how to react to messages that you receive.
+
+
+
+Receive Message
+--------
