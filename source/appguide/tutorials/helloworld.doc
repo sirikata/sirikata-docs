@@ -4,8 +4,8 @@
 
 .. _helloworld:
 
-Getting started/Your first script
-=======================================
+Hello World -- Your First Script
+================================
   
 You will need to connect to Sirikata or bring your own world up.<lkjs>
 
@@ -120,5 +120,3 @@ run-time automatically executes this function for the scripter.
 In general, a scripter might write presence initialization code in
 such a function, but, for our purposes, printing "Hello, World!"
 suffices.
-
-

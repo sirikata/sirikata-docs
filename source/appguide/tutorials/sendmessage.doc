@@ -2,10 +2,10 @@
    Copyright 2011, Ewen Cheslack-Postava.
    CC-BY, see LICENSE file for details.
 
-.. _sendMessage:
+.. _sendmessage:
 
-Sending and receiving messages
-=======================================
+Communicating with Other Entities
+=================================
 
 The primary way that a presence associated with one entity interacts
 with a presence associated with another entity is for the presences to
@@ -58,7 +58,7 @@ importance.  The lower figures are more "important" than the upper figures.
       :width: 50%
 The bug in the above picture is less "important" than the bug in the
 picture below.
-      
+
    .. image:: images/relativeImportanceFigures/neutral.png
       :width: 50%
 The bug in the above picture is less "important" than the bug in the
@@ -88,7 +88,7 @@ something like this in practice:
 
 Essentially, when an external presence no longer satisfies a solid
 angle query, the system notifies you that that presence has left the
-result set by calling userRemoveCallback. 
+result set by calling userRemoveCallback.
 
 Try it yourself
 +++++++++++++++++++
@@ -104,9 +104,9 @@ yourself.  Enter the following code into your own scripting terminal
 
         function userRemovedCallback(nowUnimporantPresence)
         {
-            system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n"); 
+            system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n");
         }
-        
+
         system.presences[0].setOnProxAdded( userAddedCallback );
         system.presences[0].setQueryAngle(.4);
 
@@ -118,7 +118,7 @@ presence after being more distant.
 
 You can monkey around by changing ``userAddedCallback`` and
 ``userRemovedCallback`` to do more elaborate things, for instance,
-rotating your avatar in a circle on each message.  
+rotating your avatar in a circle on each message.
 
 
 
@@ -143,9 +143,9 @@ by re-using a little code from the previous section:
 
         function userRemovedCallback(nowUnimporantPresence)
         {
-            system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n"); 
+            system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n");
         }
-        
+
         system.presences[0].setOnProxAdded( userAddedCallback );
         system.presences[0].setQueryAngle(.4);
 
@@ -158,7 +158,7 @@ argument of ``userAddedCallback``) how it can be used.
 ``nowImportantPresence`` corresponds to an Emerson *visible* object.
 (For more on visible objects, see here :ref:`visibleObj`.)  Visible
 objects have a ``sendMessage`` method.  This method takes a single
-argument: the message to be sent. 
+argument: the message to be sent.
 
 Messages themselves are simply Emerson objects.  For instance, one
 could change the userAddedCallback function to do the following:
@@ -170,7 +170,7 @@ could change the userAddedCallback function to do the following:
            //create a new message
            var moveMsg = new Object();
            moveMsg.action = "forward";
-           
+
            nowImportantPresence.sendMessage(moveMsg);
         }
 

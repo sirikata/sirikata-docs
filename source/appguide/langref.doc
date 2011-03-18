@@ -1,0 +1,17 @@
+.. Sirikata Documentation
+   Copyright 2011, Ewen Cheslack-Postava.
+   CC-BY, see LICENSE file for details.
+
+.. _emerson-lang-ref:
+
+Emerson Language Reference
+==========================
+
+.. toctree::
+
+   langref/context
+   langref/presence
+   langref/system
+   langref/util
+   langref/visibleObj
+   langref/when

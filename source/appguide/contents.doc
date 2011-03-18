@@ -7,19 +7,9 @@ Application Developer's Guide
 #############################
 
 .. toctree::
+   :maxdepth: 2
 
    index
-   helloworld
-   movepresence
-   sendmessage
+   tutorials
    terminology
-   context
-   presence
-   system
-   util
-   visibleObj
-   when
-
-   
-
-
+   langref
