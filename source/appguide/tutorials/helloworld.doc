@@ -6,13 +6,10 @@
 
 Hello World -- Your First Script
 ================================
-  
-You will need to connect to Sirikata or bring your own world up.<lkjs>
-
-
 
 Hello World!
---------
+------------
+
 Let's put together a quick hello world script.  One can do this in one
 of two ways: by printing from a running entity's presence or by creating a new
 entity, connecting that entity to the world, and then telling that

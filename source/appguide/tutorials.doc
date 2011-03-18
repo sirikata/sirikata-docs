@@ -19,6 +19,7 @@ additional tutorials or just experiment, using the
 .. toctree::
    :maxdepth: 1
 
+   tutorials/connecting
    tutorials/helloworld
    tutorials/movepresence
    tutorials/sendmessage
