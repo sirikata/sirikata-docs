@@ -182,3 +182,45 @@ section will describe how to react to messages that you receive.
 
 Receive Message
 --------
+
+In general, a scripter may want to perform different actions depending
+on the type of message that his/her presence receives and who that
+message is from.  
+
+Emerson provides custom "arrow" syntax to make this process easier.
+
+For instance, examine the following code snippet:
+::
+        function actionMsgCallback(msg,sender)
+        {
+            system.print("I got a message with action: " + msg.action);
+        }
+
+        actionMsgCallback <- new util.Pattern("action");
+
+In English, the last line of the above code states, "If any presence
+connected to this entity receives a message that has a field entitled
+action in it, then call the function actionMsgCallback."
+
+One can also create more elaborate patterns for matching.  For instance,
+::
+        actionMsgCallback <- new util.Pattern("action") <-   someSender;
+        
+the above line of code transalates to "Call actionMsgCallback if any
+of my presences receive a message from someSender that has an action
+field."
+::
+        actionMsgCallback <- new util.Pattern("action", "forward") <-   someSender;
+
+And the above line of code transalates to "Call actionMsgCallback if any
+of my presences receive a message from someSender that has an action
+field that has the value 'forward'."
+::
+        actionMsgCallback <- [new util.Pattern("action", "forward"),
+                              new util.Pattern("seqno", 3)]   <-
+                              someSender;
+
+And the above line of code translates to "Call actionMsgCallback if any
+of my presences receive a message from someSender that has an action
+field that has the value 'forward' *and* has a field named 'seqno'
+with value 3."
