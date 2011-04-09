@@ -33,7 +33,7 @@ entity to discover other presences in the virtual world, it registers
 a query through one of its presences with the Meru system.  Here's an
 example of such a query:
 ::
-        system.presences[0].setOnProxAdded( userAddedCallback );
+        system.presences[0].onProxAdded( userAddedCallback );
         system.presences[0].setQueryAngle(.4);
 
 These queries take a little thinking about.  Roughly translated, the
@@ -107,7 +107,7 @@ yourself.  Enter the following code into your own scripting terminal
             system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n");
         }
 
-        system.presences[0].setOnProxAdded( userAddedCallback );
+        system.presences[0].onProxAdded( userAddedCallback );
         system.presences[0].setQueryAngle(.4);
 
 Now, move closer and farther from other presences in the virtual
@@ -146,7 +146,7 @@ by re-using a little code from the previous section:
             system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n");
         }
 
-        system.presences[0].setOnProxAdded( userAddedCallback );
+        system.presences[0].onProxAdded( userAddedCallback );
         system.presences[0].setQueryAngle(.4);
 
 
