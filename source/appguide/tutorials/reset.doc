@@ -2,167 +2,105 @@
    Copyright 2011, Ewen Cheslack-Postava.
    CC-BY, see LICENSE file for details.
 
-.. _movepresence:
+.. _reset:
 
-Moving in the World
+Resetting Scripts
 ===================
 
-It would be a pretty boring world if all presences just stayed in one
-place.  This tutorial explains how a scripter can move presences
-throughout the world.
+Using the in-world scripting prompt may not be the best way for you to
+build your virtual world application.  This tutorial talks about:
 
-There are two basic types of movement in the system: translational and
-rotational.  In translational movement, every point of the presence's
-mesh moves the same distance; in rotational movement, a presence's
-mesh spins around a fixed axis.  A useful way of understanding the
-difference between translational and rotational movement is to think
-about a wheeled office chair.  A person wanting to translate his/her
-office chair would roll it from one point in a room to another.  A
-person wanting to rotate his/her office chair would spin in place on
-the office chair.
-
-Translational and rotational movement can be combined (ie, one can use
-Emerson to translate and rotate a presence simultaneously).  For the
-simplicity of this tutorial, we instead focus on each separately.
-
-Before we begin, a quick note on code in the following examples: the
-Emerson run-time keeps track of all of an entity's connected presences
-in an array available to the scripter as ``system.presences``.  For
-the example code used in this tutorial, we'll assume that the presence
-being moved is named by ``system.presences[0]``.
+ * Writing a script file.
+ * Loading that script on an entity.
+ * Resetting an entity to an initial script.
 
 
-Translational motion
+Writing a script file 
 --------
-Emerson allows a scripter to either instantly teleport a presence to a
-new position or to assign a velocity to the presence.  A presence with
-an assigned velocity automatically moves through the world in the
-assigned direction and rate.  For both position and velocity, Emerson
-uses standard Cartesian coordinates, and represents each using
-3-dimensional vectors.  We'll talk about position and velocity
-separately below, but it may be useful for the reader to refer to the Vec3
-type described here<lkjs> before beginning.
+If you are running the entire system locally, look for the "std" and
+"test" scripts directories.  (If you're on the windows build, go to
+the sirikata folder you unzipped, open the "share" folder, then, open
+the "js" folder; if you're on Mac or Linux, then go to "liboh", then
+"plugins", then "js", then "scripts".)  Once in this folder, create a
+new file, and name it "myScript.em".
 
-
-Teleport/SetPosition
-+++++++++++++++++++
-Assume that you have a presence that you want to instantly translate
-from its current position to a position 100m away in the x direction.
-
-We'll break such a script into 3 pieces:
- * Getting the presence's current x, y, and z coordinates in the
- space.
- * Specifying a new 3-dimensional position based on the presence's
- current x, y, and z coordinates in the space.
- * Requesting the system to move your object to this new position.
-
-
-Here's the entire script to perform the above.
+The script that we're going to write is going to print the text "timer
+fired!" every 3 seconds.  Think about how you would do this in an in-world
+command prompt.  You'd probably enter the following commands into the
+prompt:
 ::
-        var pos   = system.presences[0].getPosition();
-        pos.x     = pos.x + 100;
-        system.presences[0].setPosition(pos);
+        system.import('std/core/repeatingTimer.em');
 
-The above is explained more methodically below.
+        function testCallback()
+        {
+            system.print("\ntimer fired!\n");
+        }
 
-*Getting the presence's current coordinates in the space*
+        var repTimer = new std.core.RepeatingTimer(3,testCallback);
 
-To get a 3-dimensional vector representing the current position of a
-presence in space, simply use the ``getPosition()`` function.  As an
-example, open a scripting window and enter:
-::
-        var pos = system.presences[0].getPosition();
-        system.print(pos);
+Your script should look exactly the same.  All that executing a script
+does is sequentially evaluate all the commands in a script file as if
+they had been individually entered at an in-world scripting terminal.  
 
-You should see the position of a presence printed in the following
-form: <x,y,z>.  You can access the individual x, y, and z fields of
-this position with the accessors `.x`, `.y`, and `.z`, respectively.
-That is, if you wanted to just print the x position of a presence, you
-would replace the second line of the above function as shown below:
-::
-        var pos = system.presences[0].getPosition();
-        system.print(pos.x);
-
-*Specifying a new 3-dimensional position based on ``pos``*
-After the previous section, the variable ``pos`` stores
-the current position associated with ``system.presences[0]``.  We need
-to specify a new target position.  Doing so is simple:
-::
-        pos.x = pos.x + 100;
-
-It is important to note, the above line does *not* move the presence
-by itself.  It instead changes the value stored in ``pos``.  ``pos``
-now describes the position that we want to move our presence to.
-
-*Requesting the system to move your object to ``pos``*
-To actually set the position of ``system.presences[0]`` to ``pos``,
-one simply uses the ``setPosition`` function:
-::
-        system.presences[0].setPosition(pos);
-
-The ``setPosition`` function takes in a single argument, a
-3-dimensional vector, and instantly moves the associated presence to
-that point in the space.
-
-SetVelocity
-+++++++++++++++++++
-The above example instantly moved a presence from one point to another.
-While such an operation is possible in a virtual world, it certainly
-does not agree with (most of) the real world: one wouldn't see a train
-teleport from one station to another -- instead, the train acquires a
-velocity and moves from point to point non-instantaneously.
-
-Emerson provides similar capabilities for presences by allowing a
-scripter to set a presence's velocity (both magnitude and direction).
-(Note: in Emerson, a scripter *cannot* set higher order movement
-properties for presences such as acceleration or jerk.)
-
-Consider the simple task of moving a stationary presence 30m in the y
-direction.  To do so, a scripter would use the ``setVelocity``
-command.  Like the ``setPosition`` command described in the previous
-section, ``setVelocity`` takes in a single argument: a 3-dimensional
-vector.  The x, y, and z components of this argument 3-dimensional vector
-specifies the velocity that the presence should move in meters per
-second (in the x, y, and z directions respectively).  You can
-experiment with the ``setPosition`` function pretty easily.  For
-instance, at a scripting prompty, enter the following code:
-
-::
-        var zeroVelocity = new util.Vec3(0,0,0);
-        var posYVelocity = new util.Vec3(0,1,0);
-        var negYVelocity = new util.Vec3(0,-1,0);
-
-
-Now, to get an presence to stop moving, just enter:
-::
-        system.presences[0].setVelocity(zeroVelocity);
-
-To get a presence to start moving in the positive y direction, enter:
-::
-        system.presences[0].setVelocity(posYVelocity);
-
-And, to get a presence to start moving in the negative y direction, enter:
-::
-        system.presences[0].setVelocity(negYVelocity);
-
-
-To complete the simple task of moving a stationary presence 30m in the y
-direction, enter into the command prompt:
-::
-        system.presences[0].setVelocity(posYVelocity);
-
-and then 30 seconds later:
-::
-        system.presences[0].setVelocity(zeroVelocity);
-
-The first command should start the presence moving in the y direction at
-1 m/s.  The second command should stop the presence.  Manually
-entering such commands obviously leaves something to be desired.  For
-a more robust solution, read about ``timeout``s in the tutorial here. <lkjs>;
-
-
-
-Rotational motion
+Loading a script
 --------
-Ugh.  I hate quaternions.
-<lkjs>
+By the end of the previous section, you should have your script in
+'myScript.em'.  How do you get an in-world entity to execute it?
+Approach a presence in the world, and open a scripting point
+associated with it.  To execute the script you just wrote, all you
+need to do is call import:
+::
+        system.import('myScript.em');
+
+The first argument of the import call should be the name of your
+script.  (If you had put your script in the "test" folder, then you
+would have entered 'test/myScript.em' as the first argument.)
+
+At this point, every 3 seconds, you should see, printed into your
+scripting console, 'timer fired!'.  At this point, you should know how
+to write a script in an external file and get it 
+
+Resetting
+--------
+
+Let's say that you don't want to print 'timer fired!' every 3 seconds.
+Instead, you want to print 'timer REALLY fired!' every 5 seconds.  You
+can certainly, by hand, call `repTimer.clear()`, and then create a new
+timer.  In practice, this process may be a little cumbersome.  A
+better approach would be to modify myScript.em, clear the entity's
+current script, and then import the now-modified myScript.em.  Emerson
+makes this easy.  
+
+Before showing you how to do this, it's worth a little explanation.
+Emerson has a special "reset" call that can only be executed from your
+root sandbox.  When a scripter executes this call, almost everything that
+he/she scripted is wiped away.  The two things that remain:
+
+ * The root sandbox's presences (and their associated state)
+ * A special `script` string associated with each entity.
+
+You should know about the first of these by now, so let's focus on the
+second part.  A user can set the `script` string by calling:
+::
+        system.setScript(someString);
+
+where `someString` is a string the scripter provides.  When an Emerson
+entity is reset, the Emerson runtime explicitly executes whatever is
+contained in that string after wiping away all other data.
+
+A really useful thing to put into strings like this is a simple import
+call.  Let's think about how that would work for our simple timer
+fired script.  After making the changes to myScript.em so that the
+timer fires every 5 seconds (instead of 3) and displays a different
+message, enter:
+::
+        system.setScript('system.import("myScript.em");');
+
+into your in-world scripting console, then wehenever you call
+`system.reset()`, the first thing that happens after reset is that
+your entity re-imports myScript.em.  You can now change your script
+files, and automatically incorporate those changes.
+
+
+
+

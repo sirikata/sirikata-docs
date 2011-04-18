@@ -50,11 +50,10 @@ Assume that you have a presence that you want to instantly translate
 from its current position to a position 100m away in the x direction.
 
 We'll break such a script into 3 pieces:
- * Getting the presence's current x, y, and z coordinates in the
- space.
- * Specifying a new 3-dimensional position based on the presence's
- current x, y, and z coordinates in the space.
- * Requesting the system to move your object to this new position.
+
+  * Getting the presence's current x, y, and z coordinates in the space.
+  * Specifying a new 3-dimensional position based on the presence's current x, y, and z coordinates in the space.
+  * Requesting the system to move your object to this new position.
 
 
 Here's the entire script to perform the above.
@@ -126,7 +125,6 @@ specifies the velocity that the presence should move in meters per
 second (in the x, y, and z directions respectively).  You can
 experiment with the ``setPosition`` function pretty easily.  For
 instance, at a scripting prompty, enter the following code:
-
 ::
         var zeroVelocity = new util.Vec3(0,0,0);
         var posYVelocity = new util.Vec3(0,1,0);
