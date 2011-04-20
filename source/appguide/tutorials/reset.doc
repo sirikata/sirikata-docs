@@ -82,7 +82,7 @@ he/she scripted is wiped away.  The two things that remain:
 You should know about the first of these by now, so let's focus on the
 second part.  A user can set the `script` string by calling:
 ::
-        system.setScript(someString);
+        system.set_script(someString);
 
 where `someString` is a string the scripter provides.  When an Emerson
 entity is reset, the Emerson runtime explicitly executes whatever is
@@ -94,12 +94,18 @@ fired script.  After making the changes to myScript.em so that the
 timer fires every 5 seconds (instead of 3) and displays a different
 message, enter:
 ::
-        system.setScript('system.import("myScript.em");');
+        system.set_script("system.import('std/default.em'); system.import('std/shim.em'); system.import('myScript.em');");
 
 into your in-world scripting console, then wehenever you call
 `system.reset()`, the first thing that happens after reset is that
 your entity re-imports myScript.em.  You can now change your script
-files, and automatically incorporate those changes.
+files, and automatically incorporate those changes.  You may be a
+little confused by the two imports that precede importing from
+"myScript.em".  For entities that exist in the world before you bring
+them up, the system automatically imports these libraries (they do
+things like allowing entities in the world to respond to scripting
+messages, move events, etc.).  Because you're resetting the entire
+entity state, you must include these explicitly.
 
 
 
