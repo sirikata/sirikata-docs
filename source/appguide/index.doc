@@ -19,8 +19,9 @@ connect to a Sirikata world and script objects in Emerson.
 Navigating the Guide
 --------------------
 
-This guide is broken down into two major components: :ref:`emerson-tutorials` and the
-:ref:`emerson-lang-ref`.  The tutorials will get you
+This guide is broken down into two major components:
+:ref:`emerson-tutorials` and the `Emerson api
+<http://sirikata.com/docs/emersonapi/annotated.html>`_.  The tutorials will get you
 started, letting you start writing code with no previous experience
 with the system.  The language reference is useful once you know
 your way around the system but need to know specifics -- what is the
@@ -48,5 +49,6 @@ If you get stuck or are unable to find the answer to a
 question in these guides, try the `emerson-users mailing list
 <http://groups.google.com/group/emerson-users>`_.  Be sure to search
 before posting a new question!
+
 
 Head over to the :ref:`emerson-tutorials` to get started!
