@@ -175,8 +175,14 @@ could change the userAddedCallback function to do the following:
         }
 
 
-That's all there is to it!  You can now send messages.  The next
-section will describe how to react to messages that you receive.
+To simplify sending messages, Emerson provides "arrow" syntax.  If a
+scripter finds the line ``nowImportantPresence.sendMessage(moveMsg)``
+cumbersome, he/she can instead use the syntax ``moveMsg ->
+nowImportantPresence``, where the variable to the left of the arrow is
+an Emerson object, and the variable to the right of the arrow is the
+intended recipient of the message.  That's all there is to it.  You
+can now send messages.  The next section will describe how to react to
+messages that you receive.
 
 
 
@@ -196,7 +202,7 @@ For instance, examine the following code snippet:
             system.print("I got a message with action: " + msg.action);
         }
 
-        actionMsgCallback <- new util.Pattern("action");
+        actionMsgCallback <- [{'action'::}];
 
 In English, the last line of the above code states, "If any presence
 connected to this entity receives a message that has a field entitled
@@ -204,23 +210,31 @@ action in it, then call the function actionMsgCallback."
 
 One can also create more elaborate patterns for matching.  For instance,
 ::
-        actionMsgCallback <- new util.Pattern("action") <-   someSender;
+        actionMsgCallback <- [{'action'::}] <-   someSender;
         
 the above line of code transalates to "Call actionMsgCallback if any
 of my presences receive a message from someSender that has an action
 field."
 ::
-        actionMsgCallback <- new util.Pattern("action", "forward") <-   someSender;
+        actionMsgCallback <- [{'action':'forward':}] <-   someSender;
 
 And the above line of code transalates to "Call actionMsgCallback if any
 of my presences receive a message from someSender that has an action
 field that has the value 'forward'."
 ::
-        actionMsgCallback <- [new util.Pattern("action", "forward"),
-                              new util.Pattern("seqno", 3)]   <-
+        actionMsgCallback <- [{'action':'forward':},
+                              {'seqno':3:}]   <-
                               someSender;
 
 And the above line of code translates to "Call actionMsgCallback if any
 of my presences receive a message from someSender that has an action
 field that has the value 'forward' *and* has a field named 'seqno'
 with value 3."
+
+To match any message, with any fields, scripters currently, must enter:
+::
+        actionMsgCallback <- [new util.Pattern()]  <-
+                              someSender;
+
+This is because of a compiler bug, which will be fixed in the next
+released version of the code.                              

@@ -14,13 +14,17 @@ connecting to the world, writing a simple script, controlling an
 object, and communicating with other objects. Everyone should start by
 working through these tutorials in order.  After these, follow
 additional tutorials or just experiment, using the
-:ref:`emerson-lang-ref` for additional details.
+`api <http://sirikata.com/docs/emersonapi/annotated.html>`_ for additional details.
+
 
 .. toctree::
    :maxdepth: 1
 
    tutorials/connecting
    tutorials/helloworld
+   tutorials/reset   
    tutorials/movepresence
+   tutorials/createEntity
    tutorials/sendmessage
-   tutorials/reset 
+
+

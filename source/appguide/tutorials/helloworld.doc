@@ -54,7 +54,7 @@ In the window, type ``system.print("\n\nHello, World!\n\n");``.  Hit
 "run").  You should see "Hello, World!" appear in the scripting
 window.  That should be it.  You've created your first program!  If
 you want, you can enter other commands into the scripting window to do
-basic math <lkjs>, move this presence <lkjs>, print more messages, etc.
+basic math, :ref:`movepresence`, print more messages, etc.
       
 
 Typing in command at prompt.
@@ -71,7 +71,7 @@ Bring up entity and print when first presence is connected
 +++++++++++++++++++
 There are a variety of ways to create new entities in the world.
 The simplest is to approach an object in the world, and ask it to
-create a new entity for you.  The tutorial on creating entities <lkjs>
+create a new entity for you.  The tutorial on :ref:`createent`
 explains how a scripter can create a new entity.  This subsection
 focuses on writing a script that a newly created entity would use to
 print "Hello, World!" after it has connected to a new space.
