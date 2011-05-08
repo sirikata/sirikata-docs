@@ -156,12 +156,8 @@ consumes more than .4 steradians of ``presence[0]``'s field of view.
 What we didn't mention before was what the runtime binds to ``nowImportantPresence`` (the
 argument of ``userAddedCallback``) how it can be used.
 ``nowImportantPresence`` corresponds to an Emerson *visible* object.
-(For more on visible objects, see here :ref:`visibleObj`.)  Visible
-objects have a ``sendMessage`` method.  This method takes a single
-argument: the message to be sent.
 
-Messages themselves are simply Emerson objects.  For instance, one
-could change the userAddedCallback function to do the following:
+To simplify sending messages, Emerson provides "arrow" syntax below.
 ::
         function userAddedCallback(nowImportantPresence)
         {
@@ -171,14 +167,11 @@ could change the userAddedCallback function to do the following:
            var moveMsg = new Object();
            moveMsg.action = "forward";
 
-           nowImportantPresence.sendMessage(moveMsg);
+           moveMsg -> nowImportantPresence;
         }
 
-
-To simplify sending messages, Emerson provides "arrow" syntax.  If a
-scripter finds the line ``nowImportantPresence.sendMessage(moveMsg)``
-cumbersome, he/she can instead use the syntax ``moveMsg ->
-nowImportantPresence``, where the variable to the left of the arrow is
+The line ``moveMsg -> nowImportantPresence``, handles
+message-sending, where the variable to the left of the arrow is
 an Emerson object, and the variable to the right of the arrow is the
 intended recipient of the message.  That's all there is to it.  You
 can now send messages.  The next section will describe how to react to
