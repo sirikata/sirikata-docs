@@ -1,0 +1,205 @@
+.. Sirikata Documentation
+   Copyright 2011, Ewen Cheslack-Postava.
+   CC-BY, see LICENSE file for details.
+
+.. _gui:
+
+Adding Graphical User Interfaces
+================================
+
+Sometimes 2D user interface widgets are a better way to interact with
+a user than 3D interactions. For example, you might use a 2D widget to
+request that a user execute a script locally in a sandbox or provide
+an simpler interface to some interaction, like completing a purchase in
+a store.
+
+In Sirikata, 2D UIs are presented via small Javascript and HTML based
+widgets. You can find examples in the UI you get with the default
+client: both the scripting window and chat use these simple widgets to
+allow the user to take action in the world through a 2D interface.
+
+Components
+----------
+There are 3 components involved in making a UI that can perform
+actions in the world.
+
+ * The graphics object -- manages the UI widget and is required to
+   allocate a widget.
+ * The UI widget code -- Javascript and embedded HTML, just like the
+   code in a web page.
+ * Emerson driver code -- requests allocation of the UI widget and
+   mediates interaction between the UI and the world, sending and
+   receiving events in both directions.
+
+Generally you will be adding the UI to an avatar which already has the
+graphics object allocated. Your driver code is loaded somehow (as part
+of the user's default avatar script, or dynamically by sending a
+request to the user), asks the graphics object to allocate the UI
+widget, and then interacts with it, possibly sending events to the UI
+and receiving events back.
+
+In this tutorial, we'll construct a simple UI with a single button
+that sets your mesh to a predefined value when clicked. This is a
+simple but complete example of constructing a 2D UI interaction.
+
+Graphics Object
+---------------
+In order to load a UI, you need a graphics object to allocate it
+within.  The graphics object manages everything that occurs within the
+window that displays the world.
+
+In the current default avatar script (``js/scripts/std/defaultAvatar.em``)
+you can find it in the global variable ``simulator`` and it is an
+instance of the ``std.graphics.DefaultGraphics`` class.
+
+
+Emerson Driver Code and Allocating a UI Widget
+----------------------------------------------
+On disk, a UI widget is just a Javascript file that lives somewhere
+under ``ogre/data/``). We'll get to the exact code later, but let's
+assume we have the code in the files ``setmesh.js``. To load the GUI
+module, we call the ``addGUIModule`` method on the graphics object to load
+the UI::
+
+    // Note that the second _simulator shouldn't be necessary with version >= 0.0.3.
+    var setmesh_gui = simulator._simulator.addGUIModule("setmesh", "../setmesh.js");
+
+NOTE: Currently there's a bug in dynamically loaded GUIs. You need to
+also explicitly load your module into the UI. In
+``ogre/data/chrome/ui.html``, add an additional line of the form ::
+
+    .script("../mesh.js")
+
+below the others like it to force your UI widget to be loaded.
+
+Next, we know that our UI is going to generate some events we need to
+handle. In particular, it is going to send a request to change mesh.
+Events from the UI are specified by a string and a series of
+Javascript arguments (basic types such as strings and numbers
+only). To handle this event, we'll *bind* a handler for the event
+``"setmesh"`` ::
+
+    var setmesh_pres = system.self;
+    handleSetMesh = function(meshurl) {
+        setmesh_pres.mesh = meshurl;
+    };
+    setmesh_gui.bind("setmesh", handleSetMesh);
+
+And that's it. When the UI sends a setmesh event, handleSetMesh will
+be invoked. It uses the reference ``setmesh_pres``, the presence active
+when the GUI was loaded, to set the mesh. Because we know the
+arguments (and types!) that will be provided, we put a named argument
+for ``meshurl``. However, if we don't know the exact form or number of
+arguments, we can use the ``arguments`` keyword to extract them
+dynamically.
+
+To test this code, add it to the ``system.onPresenceConnected`` callback
+in ``std/defaultAvatar.em``. Note that it must be placed somewhere
+``system.self`` is defined (e.g. you cannot paste it at the end of the
+script since system.self may not be defined there).
+
+UI Widget Code
+--------------
+As discussed earlier, the UI code lives in a single Javascript
+file. The UI code is similar to Emerson code: it will be fully
+executed as soon as it is loaded. To continue taking actions, it sets
+up HTML elements that trigger events or uses timers to periodically
+take actions.
+
+.. sidebar:: JQuery and JQuery UI
+
+   JQuery and JQuery UI are already included into the page your
+   interface is embedded in, so you can use them without including
+   them yourself. They provide a lot of useful primitives for creating
+   and manipulating UIs, especially if you are not familiar with web
+   programming.
+
+Here's our entire script, ``setmesh.js``::
+
+    $(document).ready(
+        function() {
+            $('<div id="set-mesh-ui" title="SetMesh">' +             // (1)
+              '  <button id="set-mesh-button">Set Mesh!</button>' +
+              '</div>').appendTo('body');
+
+            $( "#set-mesh-ui" ).dialog({                             // (2)
+                width: 100,
+                height: 'auto',
+                modal: false
+            });
+            $('#set-mesh-button').click(setMesh);                    // (3)
+        }
+    );
+
+    function setMesh() {                                             // (4)
+        chrome.send("setmesh", "meerkat:///test/cube.dae/original/0/cube.dae");
+    }
+
+The entire first block sets up the UI on screen. We wrap it in a
+``$(document).ready()`` call to avoid some quirks with the way webpage
+loading works. Even if you don't know why we do this, its a good
+idea to wrap your UI construction code in one of these calls.
+
+The first statement (1) injects our UI into the page by creating a
+``div`` containing all our UI elements and appending it to ``body``. This
+example was very simple, but complete examples may require a few lines
+to get all the components put together.  Our UI just consists of a
+single button. Note that we've labeled each element with an ID.
+
+The second line (2) uses the ID we assigned to the ``div``,
+``set-mesh-ui`` to look it up ($ is the jQuery operator which finds
+elements that match the name given). It then calls the ``dialog``
+method, a jQuery UI method to turn a ``div`` into a floating dialog
+that can be dragged around the page. This gives our window the same
+appearance and features as the chat and scripting windows.
+
+The third line (3) sets up the action that should be taken when the
+``set-mesh-button`` is clicked. We simply tell it to execute a callback
+``setMesh``. Many other types of actions can be bound as callbacks --
+mouse over, mouse move, click, keypresses, etc.
+
+Of course, to invoke ``setMesh`` it must be defined. The fourth
+statement (4) does just that. However, the callback can't set the mesh
+itself -- it doesn't have a presence to act upon. Instead, it relays
+this information back to the Emerson script. Recall that we decided to
+use the string ``"setmesh"`` to filter events from the UI (other elements
+may also be sending events, e.g., "chat" or "scripting").  The special
+``chrome.send`` method allows you to send events out of the browser and
+back into the underlying system, getting them back to your Emerson
+script. The first parameter is our filter string. The second argument
+is either a single argument or an array of arguments to be passed to
+the listener. In this case, we specify the URL for the mesh we want to
+use.
+
+And that's it, with the UI loaded and the callback setup, clicking on
+the button will trigger a message back to Emerson code, which will be
+handled by the Emerson ``handleSetMesh`` method. This, in turn, results
+in a request to the space to set the presence's mesh.
+
+Manipulating Widgets from Emerson
+---------------------------------
+This simple example only required the UI to be setup and then listen
+for events, but didn't require any further manipulation of the UI from
+Emerson. To further interact or update the UI from Emerson, you use
+the ``std.graphics.GUI`` object returned by ``addGUIModule``.  This
+object has a few simple methods like ``show``, ``hide``, and ``bind``
+(as used earlier). It also includes ``eval``, which is the generic way
+of interacting with the code in the UI widget. ``eval`` takes a single
+string argument containing Javascript to execute in the page. In our
+example, if we instead used the function::
+
+    var setMeshURL = "meerkat:///test/cube.dae/original/0/cube.dae"
+    function setMesh() {
+        chrome.send("setmesh", setMeshURL);
+    }
+
+we could change the URL we'd request by executing the
+following::
+
+    setmesh_gui.eval("setMeshURL = 'meerkat:///test/multimtl.dae/original/0/multimtl.dae'");
+
+which overwrites the value of ``setMeshURL``. The next time the button
+is pressed and setMesh is invoked, the new value is passed back to the
+script. This approach is convoluted, but it demonstrates how
+additional actions can be taken by Emerson code on the GUI well after
+the GUI is created.
