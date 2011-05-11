@@ -10,7 +10,7 @@ Adding Graphical User Interfaces
 Sometimes 2D user interface widgets are a better way to interact with
 a user than 3D interactions. For example, you might use a 2D widget to
 request that a user execute a script locally in a sandbox or provide
-an simpler interface to some interaction, like completing a purchase in
+a simpler interface to some interaction, like completing a purchase in
 a store.
 
 In Sirikata, 2D UIs are presented via small Javascript and HTML based
@@ -40,7 +40,7 @@ and receiving events back.
 
 In this tutorial, we'll construct a simple UI with a single button
 that sets your mesh to a predefined value when clicked. This is a
-simple but complete example of constructing a 2D UI interaction.
+simple but complete example of constructing a 2D UI.
 
 Graphics Object
 ---------------
