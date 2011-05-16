@@ -68,7 +68,7 @@ NOTE: Currently there's a bug in dynamically loaded GUIs. You need to
 also explicitly load your module into the UI. In
 ``ogre/data/chrome/ui.html``, add an additional line of the form ::
 
-    .script("../mesh.js")
+    .script("../setmesh.js")
 
 below the others like it to force your UI widget to be loaded.
 
