@@ -203,3 +203,35 @@ is pressed and setMesh is invoked, the new value is passed back to the
 script. This approach is convoluted, but it demonstrates how
 additional actions can be taken by Emerson code on the GUI well after
 the GUI is created.
+
+Debugging GUI Code
+------------------
+While we do not have built in developer tools like browsers, there are
+a couple of ways you can debug your user interface code.
+
+First, you can turn on logging for the component which manages UI
+interaction when you start up the object host: ::
+
+  cppoh --moduleloglevel=webview=detailed
+
+This tells cppoh to enable logging for the webview module at the
+detailed level. Beware that you can get quite a bit of output, but you
+can filter by "onConsoleMessage". Essentially, anything that is
+normally printed to the debug console in the browser (or captured by
+Firebug or the builtin developer tools) will be printed to the
+terminal.  You can print your own messages using ``console.log``
+within your Javascript interface code: ::
+
+    function setMesh() {
+        console.log('Setting mesh to: ' + setMeshURL);
+        chrome.send("setmesh", setMeshURL);
+    }
+
+Exceptions should also be printed, so this method helps a lot when
+first developing code and with catching syntax errors.
+
+Another approach to debugging UI code is to develop much of it in a
+normal browser and use the debugging tools there. You can't test any
+code which interacts with the rest of Sirikata (e.g. the
+``chrome.send()`` calls), but this can be helpful for the initial
+development of the UI and workflow.
