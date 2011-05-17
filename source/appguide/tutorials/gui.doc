@@ -61,8 +61,7 @@ assume we have the code in the files ``setmesh.js``. To load the GUI
 module, we call the ``addGUIModule`` method on the graphics object to load
 the UI::
 
-    // Note that the second _simulator shouldn't be necessary with version >= 0.0.3.
-    var setmesh_gui = simulator._simulator.addGUIModule("setmesh", "../setmesh.js");
+    var setmesh_gui = simulator.addGUIModule("setmesh", "../setmesh.js");
 
 NOTE: Currently there's a bug in dynamically loaded GUIs. You need to
 also explicitly load your module into the UI. In
