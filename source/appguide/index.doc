@@ -21,11 +21,11 @@ Navigating the Guide
 
 This guide is broken down into two major components:
 :ref:`emerson-tutorials` and the `Emerson api
-<http://sirikata.com/docs/emersonapi/annotated.html>`_.  The tutorials will get you
-started, letting you start writing code with no previous experience
-with the system.  The language reference is useful once you know
-your way around the system but need to know specifics -- what is the
-exact syntax and options for sending messages? or how do I
+<http://sirikata.com/docs/head/emersonapi/>`_.  The tutorials will get
+you started, letting you start writing code with no previous
+experience with the system.  The language reference is useful once you
+know your way around the system but need to know specifics -- what is
+the exact syntax and options for sending messages? or how do I
 dynamically create new objects?
 
 For a beginner, we recommend starting with the
