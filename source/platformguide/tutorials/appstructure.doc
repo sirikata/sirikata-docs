@@ -65,7 +65,7 @@ and we just need to clean up.
 
 First, start by including the necessary headers::
 
-   #include <sirikata/core/util/Context.hpp>
+   #include <sirikata/core/service/Context.hpp>
    #include <sirikata/core/network/IOServiceFactory.hpp>
    #include <sirikata/core/network/IOService.hpp>
    #include <sirikata/core/trace/Trace.hpp>
