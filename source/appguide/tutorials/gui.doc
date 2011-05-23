@@ -131,7 +131,7 @@ Here's our entire script, ``setmesh.js``::
     );
 
     function setMesh() {                                             // (4)
-        chrome.send("setmesh", "meerkat:///test/cube.dae/original/0/cube.dae");
+        sirikata.event("setmesh", "meerkat:///test/cube.dae/original/0/cube.dae");
     }
 
 The entire first block sets up the UI on screen. We wrap it in a
@@ -163,11 +163,11 @@ itself -- it doesn't have a presence to act upon. Instead, it relays
 this information back to the Emerson script. Recall that we decided to
 use the string ``"setmesh"`` to filter events from the UI (other elements
 may also be sending events, e.g., "chat" or "scripting").  The special
-``chrome.send`` method allows you to send events out of the browser and
+``sirikata.event`` method allows you to send events out of the browser and
 back into the underlying system, getting them back to your Emerson
-script. The first parameter is our filter string. The second argument
-is either a single argument or an array of arguments to be passed to
-the listener. In this case, we specify the URL for the mesh we want to
+script. The first parameter is our filter string. The remaining
+arguments are passed as the arguments to the callback registered for
+this event. In this case, we specify the URL for the mesh we want to
 use.
 
 And that's it, with the UI loaded and the callback setup, clicking on
@@ -182,14 +182,14 @@ for events, but didn't require any further manipulation of the UI from
 Emerson. To further interact or update the UI from Emerson, you use
 the ``std.graphics.GUI`` object returned by ``addGUIModule``.  This
 object has a few simple methods like ``show``, ``hide``, and ``bind``
-(as used earlier). It also includes ``eval``, which is the generic way
-of interacting with the code in the UI widget. ``eval`` takes a single
+(as used earlier). It also includes ``GUI.eval``, which is the generic way
+of interacting with the code in the UI widget. ``GUI.eval`` takes a single
 string argument containing Javascript to execute in the page. In our
 example, if we instead used the function::
 
     var setMeshURL = "meerkat:///test/cube.dae/original/0/cube.dae"
     function setMesh() {
-        chrome.send("setmesh", setMeshURL);
+        sirikata.event("setmesh", setMeshURL);
     }
 
 we could change the URL we'd request by executing the
@@ -203,34 +203,71 @@ script. This approach is convoluted, but it demonstrates how
 additional actions can be taken by Emerson code on the GUI well after
 the GUI is created.
 
+GUI objects also provide two methods to make the most common
+interactions with GUIs simpler: ``GUI.call`` and
+``GUI.set``. ``GUI.call`` invokes a method in the context of the GUI,
+making sure all variables passed through are substituted for their
+values and properly escaped if necessary. For example
+
+    var x = 7;
+    var st = 'hello "Bob"';
+    setmesh_gui.call('myfunc', x, st);
+
+is equivalent to ::
+
+    setmesh_gui.eval( "myfunc(7, 'hello \"Bob\"');" );
+
+and is much simpler and more readable than the normal approach::
+
+    setmesh_gui.eval( 'myfunc(' + x + ',' + escape(st) + ');' );
+
+It looks more natural, is closer to a normal function call, and is
+less error-prone since escaping is performed automatically.
+
+``GUI.set`` sets the value of a variable in the script's context. The
+above example of setting the mesh URL could be written as::
+
+    setmesh_gui.set('setMeshURL', 'meerkat:///test/multimtl.dae/original/0/multimtl.dae');
+
+Of course this isn't much shorter, but the ``GUI.eval`` string is
+generated automatically, escaping of strings is automatic, and you can
+easily substitute variables::
+
+    setmesh_gui.set('setMeshURL', new_mesh_url);
+
 Debugging GUI Code
 ------------------
-While we do not have built in developer tools like browsers, there are
-a couple of ways you can debug your user interface code.
+The ``sirikata`` object provides utilities besides the ability to
+notify the owning script of events. In particular, ``sirikata.log``
+allows you to log information to the console: ::
 
-First, you can turn on logging for the component which manages UI
-interaction when you start up the object host: ::
+  sirikata.log('info', 'Value: ', myvalue);
 
-  cppoh --moduleloglevel=webview=detailed
+This will log the message and value of ``myvalue`` to the console. The
+first parameter should always be a string and indicates the *log
+level*. These levels let you control the amount of information that is
+reported ('fatal', 'error', 'warn' or 'warning', 'info', 'debug',
+'detailed', 'insane'). You might put a lot of logging at the 'debug' level, which
+is off by default, and more important messages at 'warn',
+'info', or 'fatal'.
 
-This tells cppoh to enable logging for the webview module at the
-detailed level. Beware that you can get quite a bit of output, but you
-can filter by "onConsoleMessage". Essentially, anything that is
-normally printed to the debug console in the browser (or captured by
-Firebug or the builtin developer tools) will be printed to the
-terminal.  You can print your own messages using ``console.log``
-within your Javascript interface code: ::
+To control the level of messages reported, start the client with a
+different level for the `ui` module: ::
 
-    function setMesh() {
-        console.log('Setting mesh to: ' + setMeshURL);
-        chrome.send("setmesh", setMeshURL);
-    }
+  cppoh --moduleloglevel=ui=debug
 
-Exceptions should also be printed, so this method helps a lot when
-first developing code and with catching syntax errors.
+If you need messages provided by other components that may use the
+standard logging mechanisms in browsers, you can also enable these
+with the ``webview`` module: ::
+
+  cppoh --moduleloglevel=ui=debug,webview=debug
+
+Note that this also turns on other logging from this module besides that
+generated by ``console.log`` calls from scripts, so using
+``sirikata.log`` is the preferred method for logging.
 
 Another approach to debugging UI code is to develop much of it in a
 normal browser and use the debugging tools there. You can't test any
 code which interacts with the rest of Sirikata (e.g. the
-``chrome.send()`` calls), but this can be helpful for the initial
+``sirikata.event()`` calls), but this can be helpful for the initial
 development of the UI and workflow.
