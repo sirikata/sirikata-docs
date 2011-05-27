@@ -115,29 +115,34 @@ take actions.
 
 Here's our entire script, ``setmesh.js``::
 
-    $(document).ready(
+    sirikata.ui(
+        'SetMesh',
         function() {
             $('<div id="set-mesh-ui" title="SetMesh">' +             // (1)
               '  <button id="set-mesh-button">Set Mesh!</button>' +
               '</div>').appendTo('body');
 
-            $( "#set-mesh-ui" ).dialog({                             // (2)
-                width: 100,
-                height: 'auto',
-                modal: false
-            });
-            $('#set-mesh-button').click(setMesh);                    // (3)
+            sirikata.ui.window(                                      // (2)
+               "#set-mesh-ui",
+               {
+                  width: 100,
+                  height: 'auto'
+               }
+            );
+
+            sirikata.ui.button('#set-mesh-button').click(setMesh);   // (3)
+
+            function setMesh() {                                     // (4)
+                sirikata.event("setmesh", "meerkat:///test/cube.dae/original/0/cube.dae");
+            }
         }
     );
 
-    function setMesh() {                                             // (4)
-        sirikata.event("setmesh", "meerkat:///test/cube.dae/original/0/cube.dae");
-    }
-
-The entire first block sets up the UI on screen. We wrap it in a
-``$(document).ready()`` call to avoid some quirks with the way webpage
-loading works. Even if you don't know why we do this, its a good
-idea to wrap your UI construction code in one of these calls.
+Our entire UI script is wrapped in a ``sirikata.ui`` call, which also
+takes a name for our UI. This allows Sirikata to set up some helpers
+and try to isolate us from other UIs. It also automatically wraps your
+script that gets rid of some quirks with the way web pages load. You
+should always wrap your UI code in ``sirikata.ui``.
 
 The first statement (1) injects our UI into the page by creating a
 ``div`` containing all our UI elements and appending it to ``body``. This
@@ -146,11 +151,9 @@ to get all the components put together.  Our UI just consists of a
 single button. Note that we've labeled each element with an ID.
 
 The second line (2) uses the ID we assigned to the ``div``,
-``set-mesh-ui`` to look it up ($ is the jQuery operator which finds
-elements that match the name given). It then calls the ``dialog``
-method, a jQuery UI method to turn a ``div`` into a floating dialog
-that can be dragged around the page. This gives our window the same
-appearance and features as the chat and scripting windows.
+``set-mesh-ui`` to create a window out of it using ``sirikata.ui.window``.
+The second parameter is a dictionary of parameters. In this case, we
+just set the size of the window.
 
 The third line (3) sets up the action that should be taken when the
 ``set-mesh-button`` is clicked. We simply tell it to execute a callback
@@ -207,7 +210,7 @@ GUI objects also provide two methods to make the most common
 interactions with GUIs simpler: ``GUI.call`` and
 ``GUI.set``. ``GUI.call`` invokes a method in the context of the GUI,
 making sure all variables passed through are substituted for their
-values and properly escaped if necessary. For example
+values and properly escaped if necessary. For example::
 
     var x = 7;
     var st = 'hello "Bob"';
