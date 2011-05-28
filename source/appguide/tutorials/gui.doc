@@ -61,15 +61,37 @@ assume we have the code in the files ``setmesh.js``. To load the GUI
 module, we call the ``addGUIModule`` method on the graphics object to load
 the UI::
 
-    var setmesh_gui = simulator.addGUIModule("setmesh", "../setmesh.js");
+    simulator.addGUIModule(
+        "setmesh", "setmesh.js",
+        function(gui) {
+            // gui is the new GUI object
+        }
+    );
 
-NOTE: Currently there's a bug in dynamically loaded GUIs. You need to
-also explicitly load your module into the UI. In
-``ogre/data/chrome/ui.html``, add an additional line of the form ::
+The third parameter is a callback function. UI loading is asynchronous
+because it might involve downloading resources. To avoid blocking for
+a long time, a callback is invoked and provides you with the newly
+created GUI object only after it is safe to start interacting with
+it.  A common pattern is to create one of these in a constructor or
+member function, and store the GUI object in a field in the callback ::
 
-    .script("../setmesh.js")
+    MyClass = function() {
 
-below the others like it to force your UI widget to be loaded.
+    simulator.addGUIModule(
+        "setmesh", "setmesh.js",
+        std.core.bind(
+            function(gui) {
+                this._gui = gui;
+            },
+            this
+        )
+    );
+
+In this approach, we use ``std.core.bind`` to make the ``this`` object
+the same in the callback as it is for the constructor.  Any additional
+initialization for the GUI, such as calling an initialization function
+in the GUI with parameters from your Emerson script, should also occur
+in this callback function.
 
 Next, we know that our UI is going to generate some events we need to
 handle. In particular, it is going to send a request to change mesh.
