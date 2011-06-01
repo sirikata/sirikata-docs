@@ -59,7 +59,8 @@ system at a high level and how they work together to create the world
 before you can understand how to setup a world or build within a
 world.
 
-Application developers should proceed to the :ref:`app-guide`. World
+Application developers should proceed to the :ref:`app-guide`, and
+will likely want to begin with the :ref:`emerson-tutorials`. World
 developers should then read about the :ref:`ecosystem` to understand
 their options when constructing a world and then proceed to the
 :ref:`world-guide`.
