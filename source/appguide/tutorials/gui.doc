@@ -144,7 +144,7 @@ Here's our entire script, ``setmesh.js``::
               '  <button id="set-mesh-button">Set Mesh!</button>' +
               '</div>').appendTo('body');
 
-            sirikata.ui.window(                                      // (2)
+            var window = new sirikata.ui.window(                     // (2)
                "#set-mesh-ui",
                {
                   width: 100,
