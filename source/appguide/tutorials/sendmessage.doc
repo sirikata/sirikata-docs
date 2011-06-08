@@ -102,7 +102,7 @@ yourself.  Enter the following code into your own scripting terminal
             system.print("\n\nPresence with address " + nowImportantPresence.toString() + " is now important!\n\n");
         }
 
-        function userRemovedCallback(nowUnimporantPresence)
+        function userRemovedCallback(nowUnimportantPresence)
         {
             system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n");
         }
