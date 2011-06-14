@@ -122,6 +122,8 @@ rotating your avatar in a circle on each message.
 
 
 
+.. _secSendMsg:
+
 Send message
 --------
 The previous section should have explained to you how to discover
@@ -141,7 +143,7 @@ by re-using a little code from the previous section:
            ...
         }
 
-        function userRemovedCallback(nowUnimporantPresence)
+        function userRemovedCallback(nowUnimportantPresence)
         {
             system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n");
         }
@@ -157,7 +159,7 @@ What we didn't mention before was what the runtime binds to ``nowImportantPresen
 argument of ``userAddedCallback``) how it can be used.
 ``nowImportantPresence`` corresponds to an Emerson *visible* object.
 
-To simplify sending messages, Emerson provides "arrow" syntax below.
+To simplify sending messages, Emerson provides "angle-angle" syntax below.
 ::
         function userAddedCallback(nowImportantPresence)
         {
@@ -167,16 +169,17 @@ To simplify sending messages, Emerson provides "arrow" syntax below.
            var moveMsg = new Object();
            moveMsg.action = "forward";
 
-           moveMsg -> nowImportantPresence;
+           moveMsg >> nowImportantPresence >> [];
         }
 
-The line ``moveMsg -> nowImportantPresence``, handles
-message-sending, where the variable to the left of the arrow is
-an Emerson object, and the variable to the right of the arrow is the
-intended recipient of the message.  That's all there is to it.  You
-can now send messages.  The next section will describe how to react to
-messages that you receive.
-
+The line ``moveMsg >> nowImportantPresence >> []``, handles
+message-sending, where ``moveMsg`` is an Emerson object (that does not
+have data written into the reserved fields ``seqNo``, ``streamID``,
+and ``makeReply``), ``nowImportantPresence`` is the intended recipient
+of the message, and ``[]`` will be described in section
+:ref:`msgResponse`.  That's all there is to it.  You can now send
+messages.  The next section will describe how to react to messages
+that you receive.
 
 
 Receive Message
@@ -186,7 +189,7 @@ In general, a scripter may want to perform different actions depending
 on the type of message that his/her presence receives and who that
 message is from.  
 
-Emerson provides custom "arrow" syntax to make this process easier.
+Emerson provides custom "angle-angle" syntax to make this process easier.
 
 For instance, examine the following code snippet:
 ::
@@ -195,7 +198,7 @@ For instance, examine the following code snippet:
             system.print("I got a message with action: " + msg.action);
         }
 
-        actionMsgCallback <- [{'action'::}];
+        actionMsgCallback << [{'action'::}];
 
 In English, the last line of the above code states, "If any presence
 connected to this entity receives a message that has a field entitled
@@ -203,20 +206,20 @@ action in it, then call the function actionMsgCallback."
 
 One can also create more elaborate patterns for matching.  For instance,
 ::
-        actionMsgCallback <- [{'action'::}] <-   someSender;
+        actionMsgCallback << [{'action'::}] <<   someSender;
         
 the above line of code transalates to "Call actionMsgCallback if any
 of my presences receive a message from someSender that has an action
 field."
 ::
-        actionMsgCallback <- [{'action':'forward':}] <-   someSender;
+        actionMsgCallback << [{'action':'forward':}] <<   someSender;
 
 And the above line of code transalates to "Call actionMsgCallback if any
 of my presences receive a message from someSender that has an action
 field that has the value 'forward'."
 ::
-        actionMsgCallback <- [{'action':'forward':},
-                              {'seqno':3:}]   <-
+        actionMsgCallback << [{'action':'forward':},
+                              {'seqno':3:}]   <<
                               someSender;
 
 And the above line of code translates to "Call actionMsgCallback if any
@@ -226,8 +229,100 @@ with value 3."
 
 To match any message, with any fields, scripters currently, must enter:
 ::
-        actionMsgCallback <- [new util.Pattern()]  <-
+        actionMsgCallback << [new util.Pattern()]  <<
                               someSender;
 
 This is because of a compiler bug, which will be fixed in the next
 released version of the code.                              
+
+
+
+.. _msgResponse:
+
+Message Responses
+--------
+
+In section :ref:`secSendMsg`, you may have noticed the funny
+``[]`` at the end of message send statements.  This section describes
+how you can use this final statement in the angle-angle pipeline to
+to support message-response pattern of communication (A sends a
+message to B, B responds to that message, A responds to B's
+response, etc.).  
+
+The array at the end of the message sending statement can have zero to
+three fields.  The first field is a function that describes what to do
+if a message sender receives a response to his/her message.  For
+instance, if you simply want to print "I got a response", whenever you
+receive a response to one of your messages, you would do the
+following:
+::
+
+      function printOnRespFunc(msgResp,msgRespSender)
+      {
+          system.print('\n\nI got a response\n');
+      }
+
+      msgToSend >> receiver >> [printOnRespFunc];
+
+      
+By default, the system executes the ``printOnRespFunc`` when a
+receiver replies to your message.  The receiver's reply is placed
+in the argument ``msgResp`` and the receiver (as a visible object) is
+placed in the argument ``msgRespSender``.
+
+The system automatically stops waiting for a response after 5 seconds
+pass.  Any response that you receive after this time will not trigger
+``printOnRespFunc`` to execute.  If you want to listen for a response
+for a longer or shorter time, you can provide a second argument to the
+sending array.  For instance, if you instead want to listen for a
+response to your message for a full 10 seconds after your message has
+been sent, you would change the last statement to:
+::
+      msgToSend >> receiver >> [printOnRespFunc,10];
+
+Finally, if you want to print "No response" if you do not receive a
+response within 10 seconds, the send array takes a third parameter:
+::
+      function printOnRespFunc(msgResp,msgRespSender)
+      {
+          system.print('\n\nI got a response\n');
+      }
+
+      function printOnNoRespFunc()
+      {
+          system.print('\n\No response\n');
+      }
+      
+      msgToSend >> receiver >> [printOnRespFunc,10,printOnNoRespFunc];
+
+      
+The above code describes how one would catch a response, but does not
+explain how one would actually generate a response.  Consider a new
+example where instead of printing "I got a response", you want to
+instead echo back any responses that you receive to your first
+message.  This is simply done through the ``makeReply`` function that
+the system appends to each message:
+::
+      function echoOnRespFunc(msgResp,msgRespSender)
+      {
+            msgResp.makeReply(msgResp) >> [echoOnRespFunc, 10, printOnNoRespFunc];
+      }
+
+      function printOnNoRespFunc()
+      {
+          system.print('\n\No response\n');
+      }
+      
+      msgToSend >> receiver >> [printOnRespFunc,10,printOnNoRespFunc];
+
+      
+``makeReply`` takes a single argument, an object that you want to send
+to whoever sent you a message in response to the message that that
+presence sent you.  If for instance, you wanted to send an empty
+object in response to any message that you received, you would change
+the body of ``echoOnRespFunc`` to state:  ``msgResp.makeReply({}) >> [echoOnRespFunc, 10, printOnNoRespFunc];``.
+
+
+
+
+
