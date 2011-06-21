@@ -48,10 +48,20 @@ In order to load a UI, you need a graphics object to allocate it
 within.  The graphics object manages everything that occurs within the
 window that displays the world.
 
-In the current default avatar script (``js/scripts/std/defaultAvatar.em``)
-you can find it in the global variable ``simulator`` and it is an
-instance of the ``std.graphics.DefaultGraphics`` class.
+In the current default avatar script
+(``js/scripts/std/defaultAvatar.em``) you can find it in the global
+variable ``simulator`` and it is an instance of the
+``std.graphics.DefaultGraphics`` class.  Because you need the graphics
+and GUI systems to be completely initialized before executing your
+code, we'll place our code inside the callback it provides: ::
 
+    simulator = new std.graphics.DefaultGraphics(
+        system.self, 'ogregraphics',
+        function() {
+            // Invoked when DefaultGraphics is done initializing,
+            // we'll put our new code in here
+        }
+    );
 
 Emerson Driver Code and Allocating a UI Widget
 ----------------------------------------------
@@ -62,7 +72,7 @@ module, we call the ``addGUIModule`` method on the graphics object to load
 the UI::
 
     simulator.addGUIModule(
-        "setmesh", "setmesh.js",
+        "SetMesh", "setmesh.js",
         function(gui) {
             // gui is the new GUI object
         }
@@ -72,13 +82,11 @@ The third parameter is a callback function. UI loading is asynchronous
 because it might involve downloading resources. To avoid blocking for
 a long time, a callback is invoked and provides you with the newly
 created GUI object only after it is safe to start interacting with
-it.  A common pattern is to create one of these in a constructor or
-member function, and store the GUI object in a field in the callback ::
-
-    MyClass = function() {
+it.  A common pattern is to store the resulting GUI object in a field
+of the object that created it: ::
 
     simulator.addGUIModule(
-        "setmesh", "setmesh.js",
+        "SetMesh", "setmesh.js",
         std.core.bind(
             function(gui) {
                 this._gui = gui;
@@ -98,13 +106,23 @@ handle. In particular, it is going to send a request to change mesh.
 Events from the UI are specified by a string and a series of
 Javascript arguments (basic types such as strings and numbers
 only). To handle this event, we'll *bind* a handler for the event
-``"setmesh"`` ::
+``"setmesh"``. Extending our previous code, we get: ::
 
-    var setmesh_pres = system.self;
-    handleSetMesh = function(meshurl) {
-        setmesh_pres.mesh = meshurl;
-    };
-    setmesh_gui.bind("setmesh", handleSetMesh);
+    simulator.addGUIModule(
+        "SetMesh", "setmesh.js",
+        std.core.bind(
+            function(gui) {
+                this._gui = gui;
+
+                var setmesh_pres = system.self;
+                handleSetMesh = function(meshurl) {
+                    setmesh_pres.mesh = meshurl;
+                };
+                this._gui.bind("setmesh", handleSetMesh);
+            },
+            this
+        )
+    );
 
 And that's it. When the UI sends a setmesh event, handleSetMesh will
 be invoked. It uses the reference ``setmesh_pres``, the presence active
@@ -114,10 +132,34 @@ for ``meshurl``. However, if we don't know the exact form or number of
 arguments, we can use the ``arguments`` keyword to extract them
 dynamically.
 
-To test this code, add it to the ``system.onPresenceConnected`` callback
-in ``std/defaultAvatar.em``. Note that it must be placed somewhere
-``system.self`` is defined (e.g. you cannot paste it at the end of the
-script since system.self may not be defined there).
+Finally, we have all the code we need to setup the GUI from the
+Emerson script. You can replace a line like ::
+
+    simulator = new std.graphics.DefaultGraphics(system.self, 'ogregraphics');
+
+in ``std/defaultAvatar.em`` with our updated code ::
+
+    simulator = new std.graphics.DefaultGraphics(
+        system.self, 'ogregraphics',
+        function() {
+
+            simulator.addGUIModule(
+                "SetMesh", "setmesh.js",
+                std.core.bind(
+                    function(gui) {
+                        this._gui = gui;
+
+                        var setmesh_pres = system.self;
+                        handleSetMesh = function(meshurl) {
+                            setmesh_pres.mesh = meshurl;
+                        };
+                        this._gui.bind("setmesh", handleSetMesh);
+                    },
+                    this
+                 )
+            );
+        }
+    );
 
 UI Widget Code
 --------------
@@ -151,6 +193,7 @@ Here's our entire script, ``setmesh.js``::
                   height: 'auto'
                }
             );
+            window.show();
 
             sirikata.ui.button('#set-mesh-button').click(setMesh);   // (3)
 
@@ -220,7 +263,7 @@ example, if we instead used the function::
 we could change the URL we'd request by executing the
 following::
 
-    setmesh_gui.eval("setMeshURL = 'meerkat:///test/multimtl.dae/original/0/multimtl.dae'");
+    this._gui.eval("setMeshURL = 'meerkat:///test/multimtl.dae/original/0/multimtl.dae'");
 
 which overwrites the value of ``setMeshURL``. The next time the button
 is pressed and setMesh is invoked, the new value is passed back to the
@@ -236,15 +279,15 @@ values and properly escaped if necessary. For example::
 
     var x = 7;
     var st = 'hello "Bob"';
-    setmesh_gui.call('myfunc', x, st);
+    this._gui.call('myfunc', x, st);
 
 is equivalent to ::
 
-    setmesh_gui.eval( "myfunc(7, 'hello \"Bob\"');" );
+    this._gui.eval( "myfunc(7, 'hello \"Bob\"');" );
 
 and is much simpler and more readable than the normal approach::
 
-    setmesh_gui.eval( 'myfunc(' + x + ',' + escape(st) + ');' );
+    this._gui.eval( 'myfunc(' + x + ',' + escape(st) + ');' );
 
 It looks more natural, is closer to a normal function call, and is
 less error-prone since escaping is performed automatically.
@@ -252,13 +295,13 @@ less error-prone since escaping is performed automatically.
 ``GUI.set`` sets the value of a variable in the script's context. The
 above example of setting the mesh URL could be written as::
 
-    setmesh_gui.set('setMeshURL', 'meerkat:///test/multimtl.dae/original/0/multimtl.dae');
+    this._gui.set('setMeshURL', 'meerkat:///test/multimtl.dae/original/0/multimtl.dae');
 
 Of course this isn't much shorter, but the ``GUI.eval`` string is
 generated automatically, escaping of strings is automatic, and you can
 easily substitute variables::
 
-    setmesh_gui.set('setMeshURL', new_mesh_url);
+    this._gui.set('setMeshURL', new_mesh_url);
 
 Debugging GUI Code
 ------------------
