@@ -339,3 +339,20 @@ normal browser and use the debugging tools there. You can't test any
 code which interacts with the rest of Sirikata (e.g. the
 ``sirikata.event()`` calls), but this can be helpful for the initial
 development of the UI and workflow.
+
+To do this, there are just 2 steps. First, you need to force the
+system to load your GUI as a builtin. In ``ogre/data/chrome/ui.html``,
+find the section where a bunch of modules are loaded by ``$LAB``. Add
+a line for your own file *after* all the other ``.js`` files. For
+example, given the placement described earlier, ``setmesh.js`` would
+be loaded as::
+
+    .script("../setmesh.js").wait()
+
+Next, you'll just load up ``ui.html`` directly in a browser. You
+should see at least the menu system and be able to click and select
+them. If your UI doesn't pop up by default, you'll need to force it to
+since the Emerson code cannot initialize it for you. In this mode,
+certain functions (like sirikata.log and sirikata.event) cannot
+function normally. They should just end up getting logged to the
+JavaScript console in the browser and ignored.
