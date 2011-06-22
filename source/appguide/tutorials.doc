@@ -14,7 +14,7 @@ connecting to the world, writing a simple script, controlling an
 object, and communicating with other objects. Everyone should start by
 working through these tutorials in order.  After these, follow
 additional tutorials or just experiment, using the
-`api <http://sirikata.com/docs/emersonapi/annotated.html>`_ for additional details.
+`API <http://sirikata.com/docs/emersonapi/>`_ for additional details.
 
 
 .. toctree::
