@@ -271,9 +271,9 @@ script. This approach is convoluted, but it demonstrates how
 additional actions can be taken by Emerson code on the GUI well after
 the GUI is created.
 
-GUI objects also provide two methods to make the most common
-interactions with GUIs simpler: ``GUI.call`` and
-``GUI.set``. ``GUI.call`` invokes a method in the context of the GUI,
+GUI objects also provide a few methods to make the most common
+interactions with GUIs simpler: ``GUI.call``, ``GUI.set``, ``GUI.variable``.
+``GUI.call`` invokes a method in the context of the GUI,
 making sure all variables passed through are substituted for their
 values and properly escaped if necessary. For example::
 
@@ -302,6 +302,18 @@ generated automatically, escaping of strings is automatic, and you can
 easily substitute variables::
 
     this._gui.set('setMeshURL', new_mesh_url);
+
+Sometimes you want to be able to specify variable names in the GUI's
+context in other expressions, but any strings you pass in are
+converted to literals.  ``GUI.variable`` solves this by producing a
+special object which will be interpreted as a variable name. For
+example, to use an existing JavaScript variable ``name`` when
+evaluating a function we would say ::
+
+    this._gui.call('printname', this._gui.variable('name'));
+
+Note that because ``GUI.set`` has a fixed format for parameters, you
+don't need to use ``GUI.variable`` on its first argument.
 
 Debugging GUI Code
 ------------------
