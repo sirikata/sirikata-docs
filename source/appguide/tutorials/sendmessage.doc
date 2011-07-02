@@ -33,8 +33,8 @@ entity to discover other presences in the virtual world, it registers
 a query through one of its presences with the Meru system.  Here's an
 example of such a query:
 ::
-        system.presences[0].onProxAdded( userAddedCallback );
-        system.presences[0].setQueryAngle(.4);
+        system.self.onProxAdded( userAddedCallback );
+        system.self.setQueryAngle(.4);
 
 These queries take a little thinking about.  Roughly translated, the
 first line of the above code reads: "When a presence gets near to be
@@ -84,7 +84,7 @@ addition to the ``onProxAdded`` function shown above, Emerson has a
 complementary ``onProxRemoved`` function for presences.  It looks
 something like this in practice:
 ::
-        system.presences[0].onProxRemoved(userRemovedCallback);
+        system.self.onProxRemoved(userRemovedCallback);
 
 Essentially, when an external presence no longer satisfies a solid
 angle query, the system notifies you that that presence has left the
@@ -107,8 +107,8 @@ yourself.  Enter the following code into your own scripting terminal
             system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n");
         }
 
-        system.presences[0].onProxAdded( userAddedCallback );
-        system.presences[0].setQueryAngle(.4);
+        system.self.onProxAdded( userAddedCallback );
+        system.self.setQueryAngle(.4);
 
 Now, move closer and farther from other presences in the virtual
 world.  You should see the print message associated with
@@ -148,8 +148,8 @@ by re-using a little code from the previous section:
             system.print("\n\nPresence with address " + nowUnimportantPresence.toString() + " is now unimportant!\n\n");
         }
 
-        system.presences[0].onProxAdded( userAddedCallback );
-        system.presences[0].setQueryAngle(.4);
+        system.self.onProxAdded( userAddedCallback );
+        system.self.setQueryAngle(.4);
 
 
 As mentioned in the previous section, the Emerson runtime system will

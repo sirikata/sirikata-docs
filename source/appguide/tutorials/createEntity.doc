@@ -43,7 +43,7 @@ the following code:
 
         //new entity's presence will be located two units away from creating
         //presence's position
-        var newPos = system.presences[0].getPosition();
+        var newPos = system.self.getPosition();
         newPos.x = newPos.x + 2;
 
         //First thing that the new entity will do after its presence connects
@@ -77,7 +77,7 @@ The actual structure in the script 'test/testMove.em' may be a little
 different than scripters are used to.  Most of the scripts that we
 have discussed to this point operated on entities that already had
 presences connected to the world: scripters were able to assume
-``system.presences[0]`` existed, and was connected to the world.  In
+``system.self`` existed, and was connected to the world.  In
 contrast, the imported script executes **before** its first presence
 is automatically connected.  This means that 'test/testMove.em' must
 actually catch the first presence's connection before operating on it.
@@ -94,7 +94,7 @@ script, which uses the ``onPresenceConnected`` call.
         function moveFunc(newPres)
         {
             //set a unit velocity for the first presence in the x direction.
-            system.presences[0].setVelocity(<1,0,0>);
+            system.self.setVelocity(<1,0,0>);
         }
 
         

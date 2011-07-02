@@ -29,7 +29,7 @@ Before we begin, a quick note on code in the following examples: the
 Emerson run-time keeps track of all of an entity's connected presences
 in an array available to the scripter as ``system.presences``.  For
 the example code used in this tutorial, we'll assume that the presence
-being moved is named by ``system.presences[0]``.
+being moved is named by ``system.self``.  
 
 
 Translational motion
@@ -58,9 +58,9 @@ We'll break such a script into 3 pieces:
 
 Here's the entire script to perform the above.
 ::
-        var pos   = system.presences[0].getPosition();
+        var pos   = system.self.getPosition();
         pos.x     = pos.x + 100;
-        system.presences[0].setPosition(pos);
+        system.self.setPosition(pos);
 
 The above is explained more methodically below.
 
@@ -70,7 +70,7 @@ To get a 3-dimensional vector representing the current position of a
 presence in space, simply use the ``getPosition()`` function.  As an
 example, open a scripting window and enter:
 ::
-        var pos = system.presences[0].getPosition();
+        var pos = system.self.getPosition();
         system.print(pos);
 
 You should see the position of a presence printed in the following
@@ -79,12 +79,12 @@ this position with the accessors `.x`, `.y`, and `.z`, respectively.
 That is, if you wanted to just print the x position of a presence, you
 would replace the second line of the above function as shown below:
 ::
-        var pos = system.presences[0].getPosition();
+        var pos = system.self.getPosition();
         system.print(pos.x);
 
 *Specifying a new 3-dimensional position based on ``pos``*
 After the previous section, the variable ``pos`` stores
-the current position associated with ``system.presences[0]``.  We need
+the current position associated with ``system.self``.  We need
 to specify a new target position.  Doing so is simple:
 ::
         pos.x = pos.x + 100;
@@ -94,10 +94,10 @@ by itself.  It instead changes the value stored in ``pos``.  ``pos``
 now describes the position that we want to move our presence to.
 
 *Requesting the system to move your object to ``pos``*
-To actually set the position of ``system.presences[0]`` to ``pos``,
+To actually set the position of ``system.self`` to ``pos``,
 one simply uses the ``setPosition`` function:
 ::
-        system.presences[0].setPosition(pos);
+        system.self.setPosition(pos);
 
 The ``setPosition`` function takes in a single argument, a
 3-dimensional vector, and instantly moves the associated presence to
@@ -131,32 +131,32 @@ instance, at a scripting prompty, enter the following code:
         var negYVelocity = new util.Vec3(0,-1,0);
 
 
-Now, to get an presence to stop moving, just enter:
+Now, to get a presence to stop moving, just enter:
 ::
-        system.presences[0].setVelocity(zeroVelocity);
+        system.self.setVelocity(zeroVelocity);
 
 To get a presence to start moving in the positive y direction, enter:
 ::
-        system.presences[0].setVelocity(posYVelocity);
+        system.self.setVelocity(posYVelocity);
 
 And, to get a presence to start moving in the negative y direction, enter:
 ::
-        system.presences[0].setVelocity(negYVelocity);
+        system.self.setVelocity(negYVelocity);
 
 
 To complete the simple task of moving a stationary presence 30m in the y
 direction, enter into the command prompt:
 ::
-        system.presences[0].setVelocity(posYVelocity);
+        system.self.setVelocity(posYVelocity);
 
 and then 30 seconds later:
 ::
-        system.presences[0].setVelocity(zeroVelocity);
+        system.self.setVelocity(zeroVelocity);
 
 The first command should start the presence moving in the y direction at
 1 m/s.  The second command should stop the presence.  Manually
 entering such commands obviously leaves something to be desired.  For
-a more robust solution, read about ``timeout``s in the tutorial here. <lkjs>;
+a more robust solution, read about ``timeout``s in the tutorial.
 
 
 
