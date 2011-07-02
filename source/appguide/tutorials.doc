@@ -24,6 +24,7 @@ additional tutorials or just experiment, using the
    tutorials/helloworld
    tutorials/reset   
    tutorials/movepresence
+   tutorials/createPresence
    tutorials/createEntity
    tutorials/sendmessage
    tutorials/gui
