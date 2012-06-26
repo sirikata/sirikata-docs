@@ -19,7 +19,7 @@ We'll talk about each separately below.
 
 
 Print from running object
-+++++++++++++++++++
++++++++++++++++++++++++++
 
 Presumably, you're connected to a world with already-existing entities
 connected through presences.  Move close towards one (you can use the
@@ -68,7 +68,7 @@ Result of running hello, world command.
       
       
 Bring up entity and print when first presence is connected
-+++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 There are a variety of ways to create new entities in the world.
 The simplest is to approach an object in the world, and ask it to
 create a new entity for you.  The tutorial on :ref:`createent`
@@ -87,8 +87,8 @@ the connection request is successful.  This is called an "event-based
 approach".  Emerson, for the most part, encourages event-based
 scripting, and therefore uses the second strategy.
 
-Consider the simple following script:
-::
+Consider the simple following script::
+
         function printHelloWorld(newPres)
         {
             system.print("\n\nHello, World!\n\n");
@@ -96,8 +96,8 @@ Consider the simple following script:
 
         system.onPresenceConnected(printHelloWorld);
 
-Let's break it into pieces:
-::
+Let's break it into pieces::
+
         function printHelloWorld(newPres)
         {
             system.print("\n\nHello, World!\n\n");

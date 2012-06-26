@@ -12,7 +12,7 @@ This tutorial describes how to create new presences for an entity.
 
 
 The create presence call
---------
+------------------------
 All a scripter does to create a new entity is to execute the
 ``createPresence`` call.
 
@@ -30,8 +30,8 @@ passing in the newly-created presence as an argument to this callback.
 
 Let's combine this information with the previous example on moving
 presences to create a new presence, and then have it move forever in
-one direction:
-::
+one direction::
+
         function presCreatedCallback(presCreated)
         {
             //the new presence's velocity is set to
@@ -47,7 +47,7 @@ one direction:
 
 
 Managing presences:  ``system.presences`` and ``system.self``
---------
+-------------------------------------------------------------
 As you can imagine, an entity with very many presences can become
 difficult to manage.  To address this, Emerson automatically manages
 two global variables: ``system.presences`` and ``system.self``.  Any
@@ -55,8 +55,8 @@ time a new presence is created, it gets loaded into
 ``system.presences``, an array that contains all the presences
 connected to an entity.  If, for instance, a scripter wanted to set
 the velocity for all of his/her presences, he/she could enter the
-following code:
-::
+following code::
+
         for (var s in system.presences)
         {
             system.presences[s].setVelocity(<1,0,0>);
@@ -82,8 +82,8 @@ confusing, and may make more sense through a series of examples:
 To provide an example of ``system.self`` in action, recall our earlier
 task of creating a new presence and setting its velocity to be 1 m/s.
 We can re-write ``presCreatedCallback`` to use ``system.self`` instead
-of ``presCreated``:
-::
+of ``presCreated``::
+
         function presCreatedCallback(presCreated)
         {
             //the new presence's velocity is set to

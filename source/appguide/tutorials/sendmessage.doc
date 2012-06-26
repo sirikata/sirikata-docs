@@ -24,15 +24,15 @@ by moving.
 
 
 Register proximity queries/discover presences
---------
+---------------------------------------------
 
 Theory
 +++++++++++++++++++
 By default an entity only knows about its own presences.  For an
 entity to discover other presences in the virtual world, it registers
 a query through one of its presences with the Meru system.  Here's an
-example of such a query:
-::
+example of such a query::
+
         system.self.onProxAdded( userAddedCallback );
         system.self.setQueryAngle(.4);
 
@@ -56,16 +56,19 @@ importance.  The lower figures are more "important" than the upper figures.
 
    .. image:: images/relativeImportanceFigures/leastImportant.png
       :width: 50%
+
 The bug in the above picture is less "important" than the bug in the
 picture below.
 
    .. image:: images/relativeImportanceFigures/neutral.png
       :width: 50%
+
 The bug in the above picture is less "important" than the bug in the
 picture below.
 
    .. image:: images/relativeImportanceFigures/mostImportant.png
       :width: 50%
+
 The bug in the above figure would be more "important" than the bugs in
 either of the previous two figures.
 
@@ -82,8 +85,8 @@ small steradian would take up very few pixels on your monitor.)
 Before moving on to the next section, it should be noted that in
 addition to the ``onProxAdded`` function shown above, Emerson has a
 complementary ``onProxRemoved`` function for presences.  It looks
-something like this in practice:
-::
+something like this in practice::
+
         system.self.onProxRemoved(userRemovedCallback);
 
 Essentially, when an external presence no longer satisfies a solid
@@ -95,8 +98,8 @@ Try it yourself
 Enter the virtual world as an avatar.  You should have just one
 presence associated that is connected to the space.  From here, script
 yourself.  Enter the following code into your own scripting terminal
-(hit ``ctrl`` + ``s`` to bring up a scripting window for yourself):
-::
+(hit ``ctrl`` + ``s`` to bring up a scripting window for yourself)::
+
         function userAddedCallback(nowImportantPresence)
         {
             system.print("\n\nPresence with address " + nowImportantPresence.toString() + " is now important!\n\n");
@@ -125,7 +128,7 @@ rotating your avatar in a circle on each message.
 .. _secSendMsg:
 
 Send message
---------
+------------
 The previous section should have explained to you how to discover
 presences in the virtual world.  However, even if you know the
 address and existence of a presence how can you interact with it?
@@ -133,8 +136,8 @@ address and existence of a presence how can you interact with it?
 The way that presences on distinct entities interact in Emerson is
 through *messages*.  This section explains how a scripter would
 create and send a message to another presence.  To do so, let's start
-by re-using a little code from the previous section:
-::
+by re-using a little code from the previous section::
+
         function userAddedCallback(nowImportantPresence)
         {
            system.print("\n\nPresence with address " + nowImportantPresence.toString() + " is now important!\n\n");
@@ -159,8 +162,8 @@ What we didn't mention before was what the runtime binds to ``nowImportantPresen
 argument of ``userAddedCallback``) how it can be used.
 ``nowImportantPresence`` corresponds to an Emerson *visible* object.
 
-To simplify sending messages, Emerson provides "angle-angle" syntax below.
-::
+To simplify sending messages, Emerson provides "angle-angle" syntax below::
+
         function userAddedCallback(nowImportantPresence)
         {
            system.print("\n\nPresence with address " + nowImportantPresence.toString() + " is now important!\n\n");
@@ -183,7 +186,7 @@ that you receive.
 
 
 Receive Message
---------
+---------------
 
 In general, a scripter may want to perform different actions depending
 on the type of message that his/her presence receives and who that
@@ -191,8 +194,8 @@ message is from.
 
 Emerson provides custom "angle-angle" syntax to make this process easier.
 
-For instance, examine the following code snippet:
-::
+For instance, examine the following code snippet::
+
         function actionMsgCallback(msg,sender)
         {
             system.print("I got a message with action: " + msg.action);
@@ -204,20 +207,20 @@ In English, the last line of the above code states, "If any presence
 connected to this entity receives a message that has a field entitled
 action in it, then call the function actionMsgCallback."
 
-One can also create more elaborate patterns for matching.  For instance,
-::
+One can also create more elaborate patterns for matching.  For instance::
+
         actionMsgCallback << [{'action'::}] <<   someSender;
         
 the above line of code transalates to "Call actionMsgCallback if any
 of my presences receive a message from someSender that has an action
-field."
-::
+field."::
+
         actionMsgCallback << [{'action':'forward':}] <<   someSender;
 
 And the above line of code transalates to "Call actionMsgCallback if any
 of my presences receive a message from someSender that has an action
-field that has the value 'forward'."
-::
+field that has the value 'forward'."::
+
         actionMsgCallback << [{'action':'forward':},
                               {'seqno':3:}]   <<
                               someSender;
@@ -227,8 +230,8 @@ of my presences receive a message from someSender that has an action
 field that has the value 'forward' *and* has a field named 'seqno'
 with value 3."
 
-To match any message, with any fields, scripters currently, must enter:
-::
+To match any message, with any fields, scripters currently, must enter::
+
         actionMsgCallback << [new util.Pattern()]  <<
                               someSender;
 
@@ -240,7 +243,7 @@ released version of the code.
 .. _msgResponse:
 
 Message Responses
---------
+-----------------
 
 In section :ref:`secSendMsg`, you may have noticed the funny
 ``[]`` at the end of message send statements.  This section describes
@@ -276,13 +279,13 @@ pass.  Any response that you receive after this time will not trigger
 for a longer or shorter time, you can provide a second argument to the
 sending array.  For instance, if you instead want to listen for a
 response to your message for a full 10 seconds after your message has
-been sent, you would change the last statement to:
-::
+been sent, you would change the last statement to::
+
       msgToSend >> receiver >> [printOnRespFunc,10];
 
 Finally, if you want to print "No response" if you do not receive a
-response within 10 seconds, the send array takes a third parameter:
-::
+response within 10 seconds, the send array takes a third parameter::
+
       function printOnRespFunc(msgResp,msgRespSender)
       {
           system.print('\n\nI got a response\n');
@@ -301,8 +304,8 @@ explain how one would actually generate a response.  Consider a new
 example where instead of printing "I got a response", you want to
 instead echo back any responses that you receive to your first
 message.  This is simply done through the ``makeReply`` function that
-the system appends to each message:
-::
+the system appends to each message::
+
       function echoOnRespFunc(msgResp,msgRespSender)
       {
             msgResp.makeReply(msgResp) >> [echoOnRespFunc, 10, printOnNoRespFunc];

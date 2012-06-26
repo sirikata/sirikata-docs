@@ -16,7 +16,7 @@ build your virtual world application.  This tutorial talks about:
 
 
 Writing a script file 
---------
+---------------------
 If you are running the entire system locally, look for the "std" and
 "test" scripts directories.  (If you're on the windows build, go to
 the sirikata folder you unzipped, open the "share" folder, then, open
@@ -27,8 +27,8 @@ new file, and name it "myScript.em".
 The script that we're going to write is going to print the text "timer
 fired!" every 3 seconds.  Think about how you would do this in an in-world
 command prompt.  You'd probably enter the following commands into the
-prompt:
-::
+prompt::
+
         system.import('std/core/repeatingTimer.em');
 
         function testCallback()
@@ -43,13 +43,13 @@ does is sequentially evaluate all the commands in a script file as if
 they had been individually entered at an in-world scripting terminal.  
 
 Loading a script
---------
+----------------
 By the end of the previous section, you should have your script in
 'myScript.em'.  How do you get an in-world entity to execute it?
 Approach a presence in the world, and open a scripting point
 associated with it.  To execute the script you just wrote, all you
-need to do is call import:
-::
+need to do is call import::
+
         system.import('myScript.em');
 
 The first argument of the import call should be the name of your
@@ -61,7 +61,7 @@ scripting console, 'timer fired!'.  At this point, you should know how
 to write a script in an external file and get it 
 
 Resetting
---------
+---------
 
 Let's say that you don't want to print 'timer fired!' every 3 seconds.
 Instead, you want to print 'timer REALLY fired!' every 5 seconds.  You
@@ -80,8 +80,8 @@ he/she scripted is wiped away.  The two things that remain:
  * A special `script` string associated with each entity.
 
 You should know about the first of these by now, so let's focus on the
-second part.  A user can set the `script` string by calling:
-::
+second part.  A user can set the `script` string by calling::
+
         system.set_script(someString);
 
 where `someString` is a string the scripter provides.  When an Emerson
@@ -92,8 +92,8 @@ A really useful thing to put into strings like this is a simple import
 call.  Let's think about how that would work for our simple timer
 fired script.  After making the changes to myScript.em so that the
 timer fires every 5 seconds (instead of 3) and displays a different
-message, enter:
-::
+message, enter::
+
         system.set_script("system.import('std/default.em'); system.import('std/shim.em'); system.import('myScript.em');");
 
 into your in-world scripting console, then wehenever you call

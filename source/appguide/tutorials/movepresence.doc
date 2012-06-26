@@ -33,7 +33,7 @@ being moved is named by ``system.self``.
 
 
 Translational motion
---------
+--------------------
 Emerson allows a scripter to either instantly teleport a presence to a
 new position or to assign a velocity to the presence.  A presence with
 an assigned velocity automatically moves through the world in the
@@ -45,7 +45,7 @@ type described here<lkjs> before beginning.
 
 
 Teleport/SetPosition
-+++++++++++++++++++
+++++++++++++++++++++
 Assume that you have a presence that you want to instantly translate
 from its current position to a position 100m away in the x direction.
 
@@ -56,8 +56,8 @@ We'll break such a script into 3 pieces:
   * Requesting the system to move your object to this new position.
 
 
-Here's the entire script to perform the above.
-::
+Here's the entire script to perform the above::
+
         var pos   = system.self.getPosition();
         pos.x     = pos.x + 100;
         system.self.setPosition(pos);
@@ -68,8 +68,8 @@ The above is explained more methodically below.
 
 To get a 3-dimensional vector representing the current position of a
 presence in space, simply use the ``getPosition()`` function.  As an
-example, open a scripting window and enter:
-::
+example, open a scripting window and enter::
+
         var pos = system.self.getPosition();
         system.print(pos);
 
@@ -77,16 +77,16 @@ You should see the position of a presence printed in the following
 form: <x,y,z>.  You can access the individual x, y, and z fields of
 this position with the accessors `.x`, `.y`, and `.z`, respectively.
 That is, if you wanted to just print the x position of a presence, you
-would replace the second line of the above function as shown below:
-::
+would replace the second line of the above function as shown below::
+
         var pos = system.self.getPosition();
         system.print(pos.x);
 
 *Specifying a new 3-dimensional position based on ``pos``*
 After the previous section, the variable ``pos`` stores
 the current position associated with ``system.self``.  We need
-to specify a new target position.  Doing so is simple:
-::
+to specify a new target position.  Doing so is simple::
+
         pos.x = pos.x + 100;
 
 It is important to note, the above line does *not* move the presence
@@ -95,8 +95,8 @@ now describes the position that we want to move our presence to.
 
 *Requesting the system to move your object to ``pos``*
 To actually set the position of ``system.self`` to ``pos``,
-one simply uses the ``setPosition`` function:
-::
+one simply uses the ``setPosition`` function::
+
         system.self.setPosition(pos);
 
 The ``setPosition`` function takes in a single argument, a
@@ -124,33 +124,33 @@ vector.  The x, y, and z components of this argument 3-dimensional vector
 specifies the velocity that the presence should move in meters per
 second (in the x, y, and z directions respectively).  You can
 experiment with the ``setPosition`` function pretty easily.  For
-instance, at a scripting prompty, enter the following code:
-::
+instance, at a scripting prompty, enter the following code::
+
         var zeroVelocity = new util.Vec3(0,0,0);
         var posYVelocity = new util.Vec3(0,1,0);
         var negYVelocity = new util.Vec3(0,-1,0);
 
 
-Now, to get a presence to stop moving, just enter:
-::
+Now, to get a presence to stop moving, just enter::
+
         system.self.setVelocity(zeroVelocity);
 
-To get a presence to start moving in the positive y direction, enter:
-::
+To get a presence to start moving in the positive y direction, enter::
+
         system.self.setVelocity(posYVelocity);
 
-And, to get a presence to start moving in the negative y direction, enter:
-::
+And, to get a presence to start moving in the negative y direction, enter::
+
         system.self.setVelocity(negYVelocity);
 
 
 To complete the simple task of moving a stationary presence 30m in the y
-direction, enter into the command prompt:
-::
+direction, enter into the command prompt::
+
         system.self.setVelocity(posYVelocity);
 
-and then 30 seconds later:
-::
+and then 30 seconds later::
+
         system.self.setVelocity(zeroVelocity);
 
 The first command should start the presence moving in the y direction at
@@ -161,6 +161,6 @@ a more robust solution, read about ``timeout``s in the tutorial.
 
 
 Rotational motion
---------
+-----------------
 Ugh.  I hate quaternions.
 <lkjs>

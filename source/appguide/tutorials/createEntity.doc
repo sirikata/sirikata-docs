@@ -14,7 +14,7 @@ that entity's presence move through the world.
 
 
 The create entity call
---------
+----------------------
 All a scripter does to create a new entity is to execute the
 ``create_entity`` call.  The call:
 
@@ -36,8 +36,8 @@ these parameters are:
 Example
 --------
 Now that you know the structure of a ``create_entity`` call, consider
-the following code:
-::
+the following code::
+
         //new entity's presence has the mesh of a sphere
         var meshToChangeTo = "meerkat:///test/sphere.dae/original/0/sphere.dae";
 
@@ -84,8 +84,8 @@ actually catch the first presence's connection before operating on it.
 
 This is easy, and is accomplished through the
 ``onPresenceConnected`` system call.  Below is the 'test/testMove.em'
-script, which uses the ``onPresenceConnected`` call.
-::
+script, which uses the ``onPresenceConnected`` call::
+
         //whenever a presence in the system connects to the world,
         //execute the argument of onPresenceConnected
         system.onPresenceConnected(moveFunc);
