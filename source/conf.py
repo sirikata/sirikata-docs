@@ -28,7 +28,7 @@ extensions = ['sphinx.ext.todo']
 templates_path = ['_templates']
 
 # The suffix of source filenames.
-source_suffix = '.doc'
+source_suffix = '.rst'
 
 # The encoding of source files.
 #source_encoding = 'utf-8'
