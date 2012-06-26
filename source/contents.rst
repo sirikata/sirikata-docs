@@ -17,3 +17,5 @@ Table of Contents
    worldguide/contents
 
    platformguide/contents
+
+   api/toc

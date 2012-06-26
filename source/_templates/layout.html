@@ -1,0 +1,58 @@
+{% extends "!layout.html" %}
+{%- block extrahead %}
+<style type="text/css">
+body {
+  border: 0;
+}
+
+div#menu {
+  display: block;
+  background-color: #191919;
+  height: 3.0em;
+  border-bottom: 1px solid #373737;
+  font-family: "Palatino", "Georgia", "Baskerville", serif;
+  font-size: 16px;
+  color: #666;
+  margin-left: -80px;
+  margin-right: -80px;
+}
+
+div#menu ul {
+  width: 900px;
+  margin: 0 auto;
+  padding: 0 0 0 100px;
+  bottom: 0;
+  left: 0;
+  list-style: none;
+}
+
+div#menu ul li {
+  float: left;
+}
+
+div#menu .page_item a {
+  display: block;
+  padding-right: 40px;
+  line-height: 3.0em;
+  color: #868686;
+  text-decoration: none;
+}
+</style>
+{{ super() }}
+{% endblock %}
+
+{% block header %}
+<div id="menu">
+    <ul>
+        <li class="page_item page-item-2 current_page_item"><a href="http://www.sirikata.com/blog/">Sirikata</a></li>
+        <li class="page_item page-item-340"><a href="http://www.sirikata.com/blog/download/">Download</a></li>
+        <li class="page_item page-item-3"><a href="http://www.sirikata.com/blog/wiki/">Wiki</a></li>
+        <li class="page_item page-item-307"><a href="http://www.sirikata.com/blog/posts/">Blog</a></li>
+        <li class="page_item page-item-399"><a href="http://www.sirikata.com/blog/publications/">Publications</a></li>
+        <li class="page_item page-item-318"><a href="http://www.sirikata.com/blog/people/">People</a></li>
+    </ul>
+    <div class="clear"></div>
+</div>
+
+    {{ super() }}
+{% endblock %}
