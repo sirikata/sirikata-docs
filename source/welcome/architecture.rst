@@ -58,7 +58,7 @@ object hosts, the world wouldn't have any objects in it. Without the
 space, object hosts wouldn't know how to interact and other
 centralized global services like physics wouldn't be
 available. Without the content distribution network, there wouldn't be
-a place to store and retrieve data lets us display the world.
+a place to store and retrieve data that lets us display the world.
 
 These components can be put together in different ways to create
 different types of worlds.  The sidebar shows some examples.
